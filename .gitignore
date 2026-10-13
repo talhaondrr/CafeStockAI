@@ -1,0 +1,22 @@
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.rsuser
+
+# Derleme dosyalari
+bin/
+obj/
+**/bin/
+**/obj/
+
+# Gecici dosyalar
+*.tmp
+*.log
+*.cache
+
+# Ortam ve gizli bilgiler
+.env
+.env.*
+appsettings.Development.json
