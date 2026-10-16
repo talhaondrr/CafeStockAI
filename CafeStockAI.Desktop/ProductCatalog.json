@@ -1,0 +1,893 @@
+[
+  {
+    "Id": "074ed3a1-5688-5ca3-8e50-50d2a0ae93ce",
+    "Code": "MBC-001",
+    "Name": "KARAMEL",
+    "Category": "BAR SOSLAR",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "A4"
+  },
+  {
+    "Id": "bdcb1bb9-29f0-5d4a-bccd-93f02d84421c",
+    "Code": "MBC-002",
+    "Name": "ÇİKOLATA",
+    "Category": "BAR SOSLAR",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "A5"
+  },
+  {
+    "Id": "a542044a-e148-5d2f-b66d-55cb755ff0c8",
+    "Code": "MBC-003",
+    "Name": "BEYAZ ÇİKOLATA",
+    "Category": "BAR SOSLAR",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "A6"
+  },
+  {
+    "Id": "4011391a-0ecd-57d6-8961-f139788ed4bb",
+    "Code": "MBC-004",
+    "Name": "OREO",
+    "Category": "BAR SOSLAR",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "A7"
+  },
+  {
+    "Id": "dc9db060-5fb0-563b-9238-071435d3c5a6",
+    "Code": "MBC-005",
+    "Name": "BISCOFF",
+    "Category": "BAR SOSLAR",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "A8"
+  },
+  {
+    "Id": "5b17f26c-f8b7-51c0-832a-a93a4c563079",
+    "Code": "MBC-006",
+    "Name": "COFFEE",
+    "Category": "BAR SOSLAR",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "A9"
+  },
+  {
+    "Id": "1decf235-ced2-5f28-94d8-7111e5d11aa1",
+    "Code": "MBC-007",
+    "Name": "CREAM",
+    "Category": "BAR SOSLAR",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "A10"
+  },
+  {
+    "Id": "8e2740cd-ea71-522d-8fcd-41ac769df58a",
+    "Code": "MBC-008",
+    "Name": "ÇİLEK",
+    "Category": "BAR SOSLAR",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "A11"
+  },
+  {
+    "Id": "be351ff0-853f-565c-aece-32ae411bb261",
+    "Code": "MBC-009",
+    "Name": "ORMAN MEYVESİ",
+    "Category": "BAR SOSLAR",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "A12"
+  },
+  {
+    "Id": "e1ddabc0-2320-5293-8917-569a85ef64b6",
+    "Code": "MBC-010",
+    "Name": "MANGO",
+    "Category": "BAR SOSLAR",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "A13"
+  },
+  {
+    "Id": "90180374-f947-5275-a631-830d755dec91",
+    "Code": "MBC-011",
+    "Name": "ÇARKIFELEK",
+    "Category": "BAR SOSLAR",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "A14"
+  },
+  {
+    "Id": "f9f470c6-2777-5e26-b6ae-e720d83846f9",
+    "Code": "MBC-012",
+    "Name": "HİNDİSTAN CEVİZİ",
+    "Category": "BAR SOSLAR",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "A15"
+  },
+  {
+    "Id": "fd0abef9-ba42-5a55-82b1-e25db5c2cf66",
+    "Code": "MBC-013",
+    "Name": "CHAI TEA",
+    "Category": "BAR SOSLAR",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "A16"
+  },
+  {
+    "Id": "151efb97-2fa8-5137-a6be-9740b9b89b96",
+    "Code": "MBC-014",
+    "Name": "DRAGON",
+    "Category": "BAR SOSLAR",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "A17"
+  },
+  {
+    "Id": "a78dd013-7a00-5e1a-93fc-c8bf798266f4",
+    "Code": "MBC-015",
+    "Name": "GREEN APPLE",
+    "Category": "BAR SOSLAR",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "A18"
+  },
+  {
+    "Id": "630875cb-0128-53a8-8a60-91703ffc10b9",
+    "Code": "MBC-016",
+    "Name": "MELON",
+    "Category": "BAR SOSLAR",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "A19"
+  },
+  {
+    "Id": "efa529dc-a3e7-59b8-80e1-8ff101ff2fd1",
+    "Code": "MBC-017",
+    "Name": "BANANA",
+    "Category": "BAR SOSLAR",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "A20"
+  },
+  {
+    "Id": "b41d706c-6023-574c-8adf-be9f50879f74",
+    "Code": "MBC-018",
+    "Name": "MATCHA",
+    "Category": "BAR SOSLAR",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "A21"
+  },
+  {
+    "Id": "6df7e66c-7831-5584-bb8a-65b746fd4a3d",
+    "Code": "MBC-019",
+    "Name": "LIME CRUSH",
+    "Category": "COOL SERIES",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "A24"
+  },
+  {
+    "Id": "0b199e56-2469-5e0b-bf58-e0ef45161c9f",
+    "Code": "MBC-020",
+    "Name": "COOL BERRY",
+    "Category": "COOL SERIES",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "A25"
+  },
+  {
+    "Id": "a435a909-941d-5b15-a114-201ce6200756",
+    "Code": "MBC-021",
+    "Name": "BERRY HISBISCUS",
+    "Category": "COOL SERIES",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "A26"
+  },
+  {
+    "Id": "e5084984-3df8-5400-9b99-aece67e4e800",
+    "Code": "MBC-022",
+    "Name": "COOL BLUEBERRY",
+    "Category": "COOL SERIES",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "A27"
+  },
+  {
+    "Id": "eb55e57b-98fa-5b4d-a4e6-5c90211e3ff1",
+    "Code": "MBC-023",
+    "Name": "PESCA",
+    "Category": "COOL SERIES",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "A28"
+  },
+  {
+    "Id": "25dc4535-6561-531a-b88e-c26b55ae2360",
+    "Code": "MBC-024",
+    "Name": "ÇİLEK",
+    "Category": "BOOM SERIES",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "A31"
+  },
+  {
+    "Id": "83ad82da-003e-5ee7-877c-a6bf60e3de24",
+    "Code": "MBC-025",
+    "Name": "MANGO",
+    "Category": "BOOM SERIES",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "A32"
+  },
+  {
+    "Id": "a655673c-dee3-5c73-805f-7c42ee60eb4d",
+    "Code": "MBC-026",
+    "Name": "YABAN MERSİNİ",
+    "Category": "BOOM SERIES",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "A33"
+  },
+  {
+    "Id": "53ae39af-f83c-574b-a0f6-e7166b7bfa9c",
+    "Code": "MBC-027",
+    "Name": "ÇİKOLATALI",
+    "Category": "BOOM SERIES",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "A34"
+  },
+  {
+    "Id": "8093fa6a-ef3c-5839-90d9-b7e439268657",
+    "Code": "MBC-028",
+    "Name": "CAKE BALL",
+    "Category": "KASA ÖNÜ",
+    "Unit": "Adet",
+    "MinimumStock": 0,
+    "SourceCell": "A37"
+  },
+  {
+    "Id": "21fc9bd5-a1e8-547c-ae1e-b53d65af6a32",
+    "Code": "MBC-029",
+    "Name": "SPONGE C. KREMA",
+    "Category": "KASA ÖNÜ",
+    "Unit": "Adet",
+    "MinimumStock": 0,
+    "SourceCell": "A38"
+  },
+  {
+    "Id": "23af5a07-78a6-5a22-883c-79f2c2f59dbd",
+    "Code": "MBC-030",
+    "Name": "SPONGE C. KAKAO",
+    "Category": "KASA ÖNÜ",
+    "Unit": "Adet",
+    "MinimumStock": 0,
+    "SourceCell": "A39"
+  },
+  {
+    "Id": "0a510229-fb7d-5412-ace1-d251585d1f62",
+    "Code": "MBC-031",
+    "Name": "MASTER NUT",
+    "Category": "KASA ÖNÜ",
+    "Unit": "Adet",
+    "MinimumStock": 0,
+    "SourceCell": "A40"
+  },
+  {
+    "Id": "efcd3e2b-95d8-5e13-87b7-75e7563045de",
+    "Code": "MBC-032",
+    "Name": "MASTER PATATO",
+    "Category": "KASA ÖNÜ",
+    "Unit": "Adet",
+    "MinimumStock": 0,
+    "SourceCell": "A41"
+  },
+  {
+    "Id": "9a688f3a-a628-535d-ab83-8f21ad3bdb16",
+    "Code": "MBC-033",
+    "Name": "NUTELLA GO",
+    "Category": "KASA ÖNÜ",
+    "Unit": "Adet",
+    "MinimumStock": 0,
+    "SourceCell": "A42"
+  },
+  {
+    "Id": "d45a8876-ca99-5b66-86d4-be6b451f7935",
+    "Code": "MBC-034",
+    "Name": "VANİLYA",
+    "Category": "ŞURUPLAR",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "D4"
+  },
+  {
+    "Id": "a4a17cea-7aaf-537e-8fde-dcc64238e361",
+    "Code": "MBC-035",
+    "Name": "KARAMEL",
+    "Category": "ŞURUPLAR",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "D5"
+  },
+  {
+    "Id": "2e0844e0-053b-5c0b-bc63-7a1e9cd121d9",
+    "Code": "MBC-036",
+    "Name": "FINDIK",
+    "Category": "ŞURUPLAR",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "D6"
+  },
+  {
+    "Id": "b50ae55a-6080-59b5-b3f0-25cb474ff67f",
+    "Code": "MBC-037",
+    "Name": "ÇİLEK",
+    "Category": "ŞURUPLAR",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "D7"
+  },
+  {
+    "Id": "e5c2124d-3709-51f6-9d56-5e5cb4914a0e",
+    "Code": "MBC-038",
+    "Name": "RASPBERRY",
+    "Category": "ŞURUPLAR",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "D8"
+  },
+  {
+    "Id": "9d9ba431-f5a5-5b97-800e-e954fe58ce5a",
+    "Code": "MBC-039",
+    "Name": "HİNDİSTAN CEVİZİ",
+    "Category": "ŞURUPLAR",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "D9"
+  },
+  {
+    "Id": "614df7c0-92cb-5842-abb8-9f5ee00742fe",
+    "Code": "MBC-040",
+    "Name": "NAR",
+    "Category": "ŞURUPLAR",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "D10"
+  },
+  {
+    "Id": "ff5c2977-0062-5273-ac1f-8cec546dc797",
+    "Code": "MBC-041",
+    "Name": "RED CURRANT",
+    "Category": "ŞURUPLAR",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "D11"
+  },
+  {
+    "Id": "7d25e2d7-f53f-5cdb-bc24-7c0a041d4b90",
+    "Code": "MBC-042",
+    "Name": "YEŞİL ELMA",
+    "Category": "ŞURUPLAR",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "D12"
+  },
+  {
+    "Id": "2b809263-dfd3-5159-9658-be58f2fecd00",
+    "Code": "MBC-043",
+    "Name": "NANE",
+    "Category": "ŞURUPLAR",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "D13"
+  },
+  {
+    "Id": "fa91917f-b120-5599-9018-17281b3c58b1",
+    "Code": "MBC-044",
+    "Name": "LIME",
+    "Category": "ŞURUPLAR",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "D14"
+  },
+  {
+    "Id": "9514c790-0598-5a90-bd18-e0dce1ed0208",
+    "Code": "MBC-045",
+    "Name": "4 GR DETOKS",
+    "Category": "BİTKİ ÇAYLARI",
+    "Unit": "Adet",
+    "MinimumStock": 0,
+    "SourceCell": "D17"
+  },
+  {
+    "Id": "65e988a1-ee22-57f2-bc3a-ec23ff1c8c61",
+    "Code": "MBC-046",
+    "Name": "4 GR ELMALI TARÇIN",
+    "Category": "BİTKİ ÇAYLARI",
+    "Unit": "Adet",
+    "MinimumStock": 0,
+    "SourceCell": "D18"
+  },
+  {
+    "Id": "a3bab5dc-5da7-5eef-b678-d4f67bb616f5",
+    "Code": "MBC-047",
+    "Name": "4 GR STAY HAPPY",
+    "Category": "BİTKİ ÇAYLARI",
+    "Unit": "Adet",
+    "MinimumStock": 0,
+    "SourceCell": "D19"
+  },
+  {
+    "Id": "85fb8f56-7f7a-5e77-9f77-89004c796a02",
+    "Code": "MBC-048",
+    "Name": "4 GR VERRY BERRY",
+    "Category": "BİTKİ ÇAYLARI",
+    "Unit": "Adet",
+    "MinimumStock": 0,
+    "SourceCell": "D20"
+  },
+  {
+    "Id": "0b196ec7-31bc-5641-a358-ba3a789a708d",
+    "Code": "MBC-049",
+    "Name": "4 GR WINTER",
+    "Category": "BİTKİ ÇAYLARI",
+    "Unit": "Adet",
+    "MinimumStock": 0,
+    "SourceCell": "D21"
+  },
+  {
+    "Id": "e7c8547a-8632-51c5-9aea-e9438adcfc36",
+    "Code": "MBC-050",
+    "Name": "4 GR YASEMİNLİ YEŞİL",
+    "Category": "BİTKİ ÇAYLARI",
+    "Unit": "Adet",
+    "MinimumStock": 0,
+    "SourceCell": "D22"
+  },
+  {
+    "Id": "dffd381c-f5e8-5e41-b766-6f3b27e3603e",
+    "Code": "MBC-051",
+    "Name": "ESPRESSO ÇEKİRDEĞİ",
+    "Category": "ANA MALZEME",
+    "Unit": "Kg",
+    "MinimumStock": 0,
+    "SourceCell": "D25"
+  },
+  {
+    "Id": "00f0cafc-c73f-5f73-a601-7f6231b57a34",
+    "Code": "MBC-052",
+    "Name": "FİLTRE KAHVE",
+    "Category": "ANA MALZEME",
+    "Unit": "Kg",
+    "MinimumStock": 0,
+    "SourceCell": "D26"
+  },
+  {
+    "Id": "6cfeae7f-844f-5572-9caa-38a643cb3e9d",
+    "Code": "MBC-053",
+    "Name": "TÜRK KAHVESİ",
+    "Category": "ANA MALZEME",
+    "Unit": "Kg",
+    "MinimumStock": 0,
+    "SourceCell": "D27"
+  },
+  {
+    "Id": "30657e3c-bee9-5a3c-b83d-3da9644b6dc6",
+    "Code": "MBC-054",
+    "Name": "YARIM YAĞLI",
+    "Category": "SÜT ÇEŞİTLERİ",
+    "Unit": "Koli",
+    "MinimumStock": 0,
+    "SourceCell": "D29"
+  },
+  {
+    "Id": "865b77a3-2007-5011-a57e-4a0dec78999b",
+    "Code": "MBC-055",
+    "Name": "LAKTOZSUZ",
+    "Category": "SÜT ÇEŞİTLERİ",
+    "Unit": "Koli",
+    "MinimumStock": 0,
+    "SourceCell": "D30"
+  },
+  {
+    "Id": "2dd87d4d-9029-5f0e-a280-a4a66c9af004",
+    "Code": "MBC-056",
+    "Name": "BİTKİSEL SÜTLER",
+    "Category": "SÜT ÇEŞİTLERİ",
+    "Unit": "Koli",
+    "MinimumStock": 0,
+    "SourceCell": "D31"
+  },
+  {
+    "Id": "0e3ec831-f36c-5d6e-9a3d-4faf037931cb",
+    "Code": "MBC-057",
+    "Name": "SOS POMPASI",
+    "Category": "ARAÇ GEREÇ",
+    "Unit": "Adet",
+    "MinimumStock": 0,
+    "SourceCell": "D34"
+  },
+  {
+    "Id": "f906bffa-fceb-5d97-9846-5b8814071668",
+    "Code": "MBC-058",
+    "Name": "ŞURUP POMPASI",
+    "Category": "ARAÇ GEREÇ",
+    "Unit": "Adet",
+    "MinimumStock": 0,
+    "SourceCell": "D35"
+  },
+  {
+    "Id": "b3dd51af-c517-5bb2-b3cc-bf5f47625cea",
+    "Code": "MBC-059",
+    "Name": "PÜRE POMPASI",
+    "Category": "ARAÇ GEREÇ",
+    "Unit": "Adet",
+    "MinimumStock": 0,
+    "SourceCell": "D36"
+  },
+  {
+    "Id": "c7ee6cc0-28a7-598b-b75e-cfb122166a38",
+    "Code": "MBC-060",
+    "Name": "TURK K. FINCAN",
+    "Category": "BARDAK/TABAK",
+    "Unit": "Adet",
+    "MinimumStock": 0,
+    "SourceCell": "D38"
+  },
+  {
+    "Id": "c78ddd04-2b55-556e-bc32-d7abf1a07e96",
+    "Code": "MBC-061",
+    "Name": "DOUBLE FINCAN",
+    "Category": "BARDAK/TABAK",
+    "Unit": "Adet",
+    "MinimumStock": 0,
+    "SourceCell": "D39"
+  },
+  {
+    "Id": "b4da6071-2611-5a35-9357-e430e7fa1cd9",
+    "Code": "MBC-062",
+    "Name": "KUPA",
+    "Category": "BARDAK/TABAK",
+    "Unit": "Adet",
+    "MinimumStock": 0,
+    "SourceCell": "D40"
+  },
+  {
+    "Id": "46b1a61f-2e88-56aa-914e-45e4b5c2efcd",
+    "Code": "MBC-063",
+    "Name": "CAM ÇAY B.",
+    "Category": "BARDAK/TABAK",
+    "Unit": "Adet",
+    "MinimumStock": 0,
+    "SourceCell": "D41"
+  },
+  {
+    "Id": "1b06872b-e401-5a50-8453-d9cb88b4a1a1",
+    "Code": "MBC-064",
+    "Name": "PASTA TABAĞI",
+    "Category": "BARDAK/TABAK",
+    "Unit": "Adet",
+    "MinimumStock": 0,
+    "SourceCell": "D42"
+  },
+  {
+    "Id": "5652d49f-be35-59f4-8c61-8ad1d293501c",
+    "Code": "MBC-065",
+    "Name": "SICAK ÇİKOLATA",
+    "Category": "TOZ VE KURUTULMUŞ",
+    "Unit": "Kg",
+    "MinimumStock": 0,
+    "SourceCell": "G4"
+  },
+  {
+    "Id": "bac5617b-8c35-5e38-8ed6-cb9dbd2064a4",
+    "Code": "MBC-066",
+    "Name": "SICAK B. ÇİKOLATA",
+    "Category": "TOZ VE KURUTULMUŞ",
+    "Unit": "Kg",
+    "MinimumStock": 0,
+    "SourceCell": "G5"
+  },
+  {
+    "Id": "52ad7bef-92ba-5f70-ad8b-581c0ff8b9ed",
+    "Code": "MBC-067",
+    "Name": "SALEP",
+    "Category": "TOZ VE KURUTULMUŞ",
+    "Unit": "Kg",
+    "MinimumStock": 0,
+    "SourceCell": "G6"
+  },
+  {
+    "Id": "a895fbf9-7fdf-50de-8475-2c3b9e751669",
+    "Code": "MBC-068",
+    "Name": "TARÇIN",
+    "Category": "TOZ VE KURUTULMUŞ",
+    "Unit": "Kg",
+    "MinimumStock": 0,
+    "SourceCell": "G7"
+  },
+  {
+    "Id": "e152452f-a1a3-59e3-a8eb-caefcf95f06f",
+    "Code": "MBC-069",
+    "Name": "KURU PORTAKAL",
+    "Category": "TOZ VE KURUTULMUŞ",
+    "Unit": "Kg",
+    "MinimumStock": 0,
+    "SourceCell": "G8"
+  },
+  {
+    "Id": "4cf0192d-ae9a-5139-a071-11fd95632d83",
+    "Code": "MBC-070",
+    "Name": "BERRY",
+    "Category": "TOZ VE KURUTULMUŞ",
+    "Unit": "Kg",
+    "MinimumStock": 0,
+    "SourceCell": "G9"
+  },
+  {
+    "Id": "7140019c-bdd3-580f-a89a-6037b9fd8826",
+    "Code": "MBC-071",
+    "Name": "KURU LIME",
+    "Category": "TOZ VE KURUTULMUŞ",
+    "Unit": "Kg",
+    "MinimumStock": 0,
+    "SourceCell": "G10"
+  },
+  {
+    "Id": "16bba727-da1d-5b5e-b5fe-2a0834db17cf",
+    "Code": "MBC-072",
+    "Name": "COLD BREW",
+    "Category": "TOZ VE KURUTULMUŞ",
+    "Unit": "Kg",
+    "MinimumStock": 0,
+    "SourceCell": "G11"
+  },
+  {
+    "Id": "63188b41-3259-5467-b070-3ab9cf65f4e3",
+    "Code": "MBC-073",
+    "Name": "18 OZ SOĞUK",
+    "Category": "BARDAK/KAPAK/PİPET",
+    "Unit": "Fişek",
+    "MinimumStock": 0,
+    "SourceCell": "G14"
+  },
+  {
+    "Id": "e499179d-d008-5526-a3ee-b2425149b7e4",
+    "Code": "MBC-074",
+    "Name": "22 OZ SOĞUK",
+    "Category": "BARDAK/KAPAK/PİPET",
+    "Unit": "Fişek",
+    "MinimumStock": 0,
+    "SourceCell": "G15"
+  },
+  {
+    "Id": "ff1473c4-7c86-501c-973a-57599d277375",
+    "Code": "MBC-075",
+    "Name": "12 OZ SICAK",
+    "Category": "BARDAK/KAPAK/PİPET",
+    "Unit": "Fişek",
+    "MinimumStock": 0,
+    "SourceCell": "G16"
+  },
+  {
+    "Id": "57fa504b-7059-5ad8-9014-b172b89b091a",
+    "Code": "MBC-076",
+    "Name": "16 OZ SICAK",
+    "Category": "BARDAK/KAPAK/PİPET",
+    "Unit": "Fişek",
+    "MinimumStock": 0,
+    "SourceCell": "G17"
+  },
+  {
+    "Id": "6b089bde-2f02-5aa1-a5cd-007e0e3b6467",
+    "Code": "MBC-077",
+    "Name": "SICAK KAPAK",
+    "Category": "BARDAK/KAPAK/PİPET",
+    "Unit": "Fişek",
+    "MinimumStock": 0,
+    "SourceCell": "G18"
+  },
+  {
+    "Id": "9dd04a93-f696-59fe-9350-7904dde61efe",
+    "Code": "MBC-078",
+    "Name": "BOMBELİ KAPAK",
+    "Category": "BARDAK/KAPAK/PİPET",
+    "Unit": "Fişek",
+    "MinimumStock": 0,
+    "SourceCell": "G19"
+  },
+  {
+    "Id": "4bb5ad6d-140c-5e97-b603-89b1a36721fc",
+    "Code": "MBC-079",
+    "Name": "DÜZ KAPAK",
+    "Category": "BARDAK/KAPAK/PİPET",
+    "Unit": "Fişek",
+    "MinimumStock": 0,
+    "SourceCell": "G20"
+  },
+  {
+    "Id": "0370b9a9-2959-59f8-b22d-643dc6eb10db",
+    "Code": "MBC-080",
+    "Name": "BASKILI PİPET",
+    "Category": "BARDAK/KAPAK/PİPET",
+    "Unit": "Paket",
+    "MinimumStock": 0,
+    "SourceCell": "G21"
+  },
+  {
+    "Id": "92d79d11-1bc5-53e3-a996-110bec7c5317",
+    "Code": "MBC-081",
+    "Name": "BABACO PİPET",
+    "Category": "BARDAK/KAPAK/PİPET",
+    "Unit": "Paket",
+    "MinimumStock": 0,
+    "SourceCell": "G22"
+  },
+  {
+    "Id": "f1973293-4384-57bf-ac02-9c943b831bcc",
+    "Code": "MBC-082",
+    "Name": "LİMONATA",
+    "Category": "LİMONATA",
+    "Unit": "Şişe",
+    "MinimumStock": 0,
+    "SourceCell": "G38"
+  },
+  {
+    "Id": "1ba17973-8f52-5c50-928b-85256b61fadd",
+    "Code": "MBC-083",
+    "Name": "KARIŞTIRICI",
+    "Category": "ENVANTER",
+    "Unit": "",
+    "MinimumStock": 0,
+    "SourceCell": "J4"
+  },
+  {
+    "Id": "48826263-8964-5dcd-8861-411265e6ec02",
+    "Code": "MBC-084",
+    "Name": "PAKET TIKAÇ",
+    "Category": "ENVANTER",
+    "Unit": "",
+    "MinimumStock": 0,
+    "SourceCell": "J5"
+  },
+  {
+    "Id": "c69b5db3-f60f-58cb-9cec-826768541d71",
+    "Code": "MBC-085",
+    "Name": "KRAFT ÇANTA",
+    "Category": "ENVANTER",
+    "Unit": "",
+    "MinimumStock": 0,
+    "SourceCell": "J6"
+  },
+  {
+    "Id": "44ebb41b-924d-579a-9a26-a3216450b9e5",
+    "Code": "MBC-086",
+    "Name": "YUMURTALIK",
+    "Category": "ENVANTER",
+    "Unit": "",
+    "MinimumStock": 0,
+    "SourceCell": "J7"
+  },
+  {
+    "Id": "bb863f63-2269-53e5-ad8a-99bbb5c69314",
+    "Code": "MBC-087",
+    "Name": "BASKILI PEÇETE",
+    "Category": "ENVANTER",
+    "Unit": "",
+    "MinimumStock": 0,
+    "SourceCell": "J8"
+  },
+  {
+    "Id": "e680e5ec-eb01-5fe7-981f-57e9a0126815",
+    "Code": "MBC-088",
+    "Name": "SLEEVE",
+    "Category": "ENVANTER",
+    "Unit": "",
+    "MinimumStock": 0,
+    "SourceCell": "J9"
+  },
+  {
+    "Id": "48e1df56-14c1-5394-9fb8-e4611aec8b53",
+    "Code": "MBC-089",
+    "Name": "STICK ŞEKER",
+    "Category": "ENVANTER",
+    "Unit": "",
+    "MinimumStock": 0,
+    "SourceCell": "J10"
+  },
+  {
+    "Id": "267f1a63-133d-52f5-88cd-26562f022ae8",
+    "Code": "MBC-090",
+    "Name": "STICK ESMER Ş.",
+    "Category": "ENVANTER",
+    "Unit": "",
+    "MinimumStock": 0,
+    "SourceCell": "J11"
+  },
+  {
+    "Id": "ee61f5b3-2d59-57a3-8f58-858d771dca9b",
+    "Code": "MBC-091",
+    "Name": "FİLTRE KAĞIDI",
+    "Category": "ENVANTER",
+    "Unit": "",
+    "MinimumStock": 0,
+    "SourceCell": "J12"
+  },
+  {
+    "Id": "2d180b27-4fc9-57ee-bb72-5cfcec4d9e75",
+    "Code": "MBC-092",
+    "Name": "TEK RENK ÇANTA",
+    "Category": "ÜRÜNLER",
+    "Unit": "Adet",
+    "MinimumStock": 0,
+    "SourceCell": "J16"
+  },
+  {
+    "Id": "00b7c3b5-e53c-512f-b471-4f2c4e3aa973",
+    "Code": "MBC-093",
+    "Name": "ÇİFT RENK ÇANTA",
+    "Category": "ÜRÜNLER",
+    "Unit": "Adet",
+    "MinimumStock": 0,
+    "SourceCell": "J17"
+  },
+  {
+    "Id": "f7b6abfe-32c4-5bf6-94b9-c94ec42c5c71",
+    "Code": "MBC-094",
+    "Name": "ŞAPKA",
+    "Category": "ÜRÜNLER",
+    "Unit": "Adet",
+    "MinimumStock": 0,
+    "SourceCell": "J18"
+  },
+  {
+    "Id": "07ff6afa-9823-5fe3-990f-5219d62c3d9f",
+    "Code": "MBC-095",
+    "Name": "ANAHTARLIK BEAR",
+    "Category": "ÜRÜNLER",
+    "Unit": "Adet",
+    "MinimumStock": 0,
+    "SourceCell": "J19"
+  },
+  {
+    "Id": "d7e4d8b3-cfd6-542c-bbb6-823762da4765",
+    "Code": "MBC-096",
+    "Name": "TERMOS",
+    "Category": "ÜRÜNLER",
+    "Unit": "Adet",
+    "MinimumStock": 0,
+    "SourceCell": "J20"
+  },
+  {
+    "Id": "bb83be5a-45b5-5e5f-a6da-6a6a1caa364e",
+    "Code": "MBC-097",
+    "Name": "SHAKER",
+    "Category": "ÜRÜNLER",
+    "Unit": "Adet",
+    "MinimumStock": 0,
+    "SourceCell": "J21"
+  },
+  {
+    "Id": "a51f02f7-38b3-5a5b-b576-e84fc5370d20",
+    "Code": "MBC-098",
+    "Name": "BERE",
+    "Category": "ÜRÜNLER",
+    "Unit": "Adet",
+    "MinimumStock": 0,
+    "SourceCell": "J22"
+  },
+  {
+    "Id": "e54da2cf-9786-4cd5-8876-45b1370d3619",
+    "Code": "MBC-099",
+    "Name": "SU",
+    "Category": "İÇECEKLER",
+    "Unit": "Koli",
+    "MinimumStock": 0,
+    "SourceCell": ""
+  }
+]

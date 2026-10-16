@@ -20,3 +20,13 @@ obj/
 .env
 .env.*
 appsettings.Development.json
+
+# Yerel isletme verileri ve yedekler
+inventory.json
+products.json
+accounts.json
+*.bak
+Yedekler/
+KurulumOncesi-*/
+*.initialized
+*.imported

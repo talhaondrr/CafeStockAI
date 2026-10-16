@@ -1,61 +1,24 @@
-
-using System;
-using System.Windows.Forms;
-
-namespace CafeStockAI.Desktop
+ï»¿namespace CafeStockAI.Desktop;
+public partial class FrmLogin : Form
 {
-    public partial class FrmLogin : Form
+    public FrmLogin()
     {
-        public FrmLogin()
+        InitializeComponent();
+        showPassword.CheckedChanged += (_, _) => txtPassword.UseSystemPasswordChar = !showPassword.Checked;
+        txtUsername.TextChanged += (_, _) => errorLabel.Text = "";
+        txtPassword.TextChanged += (_, _) => errorLabel.Text = "";
+    }
+    private void btnLogin_Click(object? sender, EventArgs e)
+    {
+        if (string.IsNullOrWhiteSpace(txtUsername.Text)) { errorLabel.Text = "LÃ¼tfen kullanÄ±cÄ± adÄ±nÄ±zÄ± giriniz."; txtUsername.Focus(); return; }
+        if (string.IsNullOrWhiteSpace(txtPassword.Text)) { errorLabel.Text = "LÃ¼tfen ÅŸifrenizi giriniz."; txtPassword.Focus(); return; }
+        try
         {
-            InitializeComponent();
+            if (!Accounts.Login(txtUsername.Text, txtPassword.Text)) { errorLabel.Text = "KullanÄ±cÄ± adÄ± veya ÅŸifre hatalÄ±; hesap kapatÄ±lmÄ±ÅŸ olabilir."; return; }
+            var dashboard = new FrmDashboard();
+            dashboard.FormClosed += (_, _) => { Access.EmployeeId=null; txtPassword.Clear(); Show(); };
+            dashboard.Show(); Hide();
         }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void btnLogin_Click(object sender, EventArgs e)
-        {
-            string kullaniciAdi = txtUsername.Text.Trim();
-            string sifre = txtPassword.Text;
-
-            if (string.IsNullOrWhiteSpace(kullaniciAdi))
-            {
-                MessageBox.Show(
-                    "Lütfen kullanýcý adýnýzý giriniz.",
-                    "CafeStock AI",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-
-                txtUsername.Focus();
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(sifre))
-            {
-                MessageBox.Show(
-                    "Lütfen þifrenizi giriniz.",
-                    "CafeStock AI",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-
-                txtPassword.Focus();
-                return;
-            }
-
-            // Dashboard ekranýný aç
-            FrmDashboard dashboard = new FrmDashboard();
-
-            // Dashboard kapatýldýðýnda uygulamayý kapat
-            dashboard.FormClosed += (s, args) => this.Close();
-
-            dashboard.Show();
-
-            // Giriþ ekranýný gizle
-            this.Hide();
-        }
+        catch (Exception ex) { errorLabel.Text = "Panel aÃ§Ä±lamadÄ±: " + ex.Message; }
     }
 }
