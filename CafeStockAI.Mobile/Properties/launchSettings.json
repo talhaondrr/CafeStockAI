@@ -1,0 +1,6 @@
+{
+ "profiles": {
+  "Mobil Demo": {"commandName":"Project","launchBrowser":true,"applicationUrl":"http://localhost:5186","environmentVariables":{"ASPNETCORE_ENVIRONMENT":"Development","CAFESTOCK_DEMO":"1"}},
+  "Mobil SQL": {"commandName":"Project","launchBrowser":true,"applicationUrl":"https://localhost:7291;http://localhost:5187","environmentVariables":{"ASPNETCORE_ENVIRONMENT":"Development","CAFESTOCK_DEMO":"0"}}
+ }
+}

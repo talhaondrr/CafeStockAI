@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup><TargetFramework>net8.0</TargetFramework><Nullable>enable</Nullable><ImplicitUsings>enable</ImplicitUsings></PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CafeStockAI.Infrastructure\CafeStockAI.Infrastructure.csproj" />
+    <EmbeddedResource Include="..\CafeStockAI.Desktop\Assets\Products\*.png" LogicalName="Mobile.Images.%(Filename)%(Extension)" />
+    <EmbeddedResource Include="..\CafeStockAI.Desktop\ProductCatalog.json" Link="ProductCatalog.json" LogicalName="Mobile.ProductCatalog.json"/>
+    <Content Include="..\CafeStockAI.Desktop\Assets\Products\*.png" Link="wwwroot\images\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest"/>
+  </ItemGroup>
+</Project>
+

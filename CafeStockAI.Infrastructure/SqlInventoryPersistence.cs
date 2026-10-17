@@ -1,11 +1,11 @@
-﻿using System.Data;
+using System.Data;
 using System.Globalization;
 using CafeStockAI.Application;
 using Microsoft.EntityFrameworkCore;
 using D=CafeStockAI.Domain;
 using M=CafeStockAI.Application.Models;
 namespace CafeStockAI.Infrastructure;
-public sealed class SqlInventoryPersistence(Func<CafeStockDbContext> factory) : IInventoryPersistence
+public sealed class SqlInventoryPersistence(Func<CafeStockDbContext> factory) : IInventoryPersistence, IWorkspacePersistence
 {
  private static string Key(string value)=>value.Trim().Normalize().ToUpper(new CultureInfo("tr-TR"));
  private static Guid Stable(string value)=>new(System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes("cafestock:"+value))[..16]);
@@ -57,6 +57,9 @@ public sealed class SqlInventoryPersistence(Func<CafeStockDbContext> factory) : 
  public void SaveInventory(M.InventoryData data){using var db=factory();using var tx=db.Database.BeginTransaction(IsolationLevel.Serializable);var settings=Settings(db);Revision(db,settings,data.SqlVersion);WriteInventory(db,data);settings.BusinessName=data.Settings.BusinessName;settings.OperatorName=data.Settings.OperatorName;db.SaveChanges();tx.Commit();data.SqlVersion=settings.Version.ToArray();}
  public void SaveProducts(List<M.Product> products){using var db=factory();using var tx=db.Database.BeginTransaction(IsolationLevel.Serializable);Revision(db,Settings(db));WriteProducts(db,products);db.SaveChanges();tx.Commit();}
  public void SaveAccounts(List<M.UserAccount> accounts){using var db=factory();using var tx=db.Database.BeginTransaction(IsolationLevel.Serializable);Revision(db,Settings(db));WriteAccounts(db,accounts);db.SaveChanges();tx.Commit();}
+ public void SaveStaffAndAccounts(M.InventoryData data,List<M.UserAccount> accounts){using var db=factory();using var tx=db.Database.BeginTransaction(IsolationLevel.Serializable);Revision(db,Settings(db),data.SqlVersion);WriteInventory(db,data);WriteAccounts(db,accounts);db.SaveChanges();tx.Commit();}
+ public void SaveProductsChecked(List<M.Product> products,byte[] version){using var db=factory();using var tx=db.Database.BeginTransaction(IsolationLevel.Serializable);Revision(db,Settings(db),version);WriteProducts(db,products);db.SaveChanges();tx.Commit();}
+ public void SaveAccountsChecked(List<M.UserAccount> accounts,byte[] version){using var db=factory();using var tx=db.Database.BeginTransaction(IsolationLevel.Serializable);Revision(db,Settings(db),version);WriteAccounts(db,accounts);db.SaveChanges();tx.Commit();}
  public bool IsInitialized(){using var db=factory();return db.Set<D.BusinessSettings>().Any();}
  public void Import(InventoryArchive archive,string fingerprint)
  {
@@ -82,3 +85,4 @@ public sealed class SqlInventoryPersistence(Func<CafeStockDbContext> factory) : 
   db.Add(new D.BusinessSettings{Id=Stable("settings"),BusinessName=archive.Inventory.Settings.BusinessName,OperatorName=archive.Inventory.Settings.OperatorName});WriteProducts(db,archive.Products);WriteInventory(db,archive.Inventory);WriteAccounts(db,archive.Accounts);if(archive.LocationAliases is not null){var history=db.Set<D.ImportHistory>().FirstOrDefault();if(history is null){history=new D.ImportHistory{SourceFingerprint=Guid.NewGuid().ToString("N"),AppliedAt=DateTime.Now};db.Add(history);}foreach(var alias in archive.LocationAliases)db.Add(new D.ImportedLocation{ImportId=history.Id,SourceWarehouseId=alias.Key,AreaId=alias.Value});}db.SaveChanges();Verify(archive,ReadArchive(db));tx.Commit();
  }
 }
+

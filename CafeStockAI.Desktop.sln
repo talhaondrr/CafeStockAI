@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CafeStockAI.Infrastructure"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CafeStockAI.DatabaseTool", "CafeStockAI.DatabaseTool\CafeStockAI.DatabaseTool.csproj", "{CA21244A-EAD8-4A1C-AD64-A506C8F29725}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CafeStockAI.Mobile", "CafeStockAI.Mobile\CafeStockAI.Mobile.csproj", "{2B37242A-59B4-471F-A6A4-F70CBD4DF66A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -88,6 +90,18 @@ Global
 		{CA21244A-EAD8-4A1C-AD64-A506C8F29725}.Release|x64.Build.0 = Release|Any CPU
 		{CA21244A-EAD8-4A1C-AD64-A506C8F29725}.Release|x86.ActiveCfg = Release|Any CPU
 		{CA21244A-EAD8-4A1C-AD64-A506C8F29725}.Release|x86.Build.0 = Release|Any CPU
+		{2B37242A-59B4-471F-A6A4-F70CBD4DF66A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B37242A-59B4-471F-A6A4-F70CBD4DF66A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B37242A-59B4-471F-A6A4-F70CBD4DF66A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2B37242A-59B4-471F-A6A4-F70CBD4DF66A}.Debug|x64.Build.0 = Debug|Any CPU
+		{2B37242A-59B4-471F-A6A4-F70CBD4DF66A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2B37242A-59B4-471F-A6A4-F70CBD4DF66A}.Debug|x86.Build.0 = Debug|Any CPU
+		{2B37242A-59B4-471F-A6A4-F70CBD4DF66A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B37242A-59B4-471F-A6A4-F70CBD4DF66A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B37242A-59B4-471F-A6A4-F70CBD4DF66A}.Release|x64.ActiveCfg = Release|Any CPU
+		{2B37242A-59B4-471F-A6A4-F70CBD4DF66A}.Release|x64.Build.0 = Release|Any CPU
+		{2B37242A-59B4-471F-A6A4-F70CBD4DF66A}.Release|x86.ActiveCfg = Release|Any CPU
+		{2B37242A-59B4-471F-A6A4-F70CBD4DF66A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

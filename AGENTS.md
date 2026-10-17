@@ -1,4 +1,4 @@
-﻿# Proje geliştirme kuralları
+# Proje geliştirme kuralları
 
 Kullanıcının 16 Ekim 2026 tarihinde paylaştığı dört sayfalık Nesne Tabanlı Programlama dönem projesi yönergesi esas alınır. Ayrıntılı eşleme: docs/PROJE-SARTNAMESI.md.
 
@@ -27,3 +27,8 @@ Kategori kutuları kaynak kategori sırasını koruyarak o anda en kısa sütuna
 
 ## DevExpress geçişi
 Gerçek DevExpress.Win.Grid 26.1.5 kurulu yerel paketlerle projeye eklendi. StockSheet artık gerçek GridControl/GridView kullanır; form tabanı XtraForm. Deneme bildirimi ekranında bitiş 9 Kasım 2026 görüldü. Lisans uyarısını/splash ekranını bastırma veya evaluation DLL dağıtma. Etkileşimli testleri peş peşe başlatma; her süreç deneme penceresi açıp kullanıcıyı engelleyebilir. Başarılı test koşusundan sonra yalnız yeni değişikliklerin gerektirdiği testleri yap.
+
+## Mobil arayüz
+Kullanıcı tüm görevlerin telefon arayüzünü, işletme sahibinin yönetim kontrolleri dahil istedi. Yayın yetkisi yok: sadece localhost geliştirme ve ayrı demo. Tünel, LAN/WAN, dış sunucu veya güvenlik duvarı değişikliği yapma. Mobil SQL mevcut cafestock şemasını kullanır; migration/import otomatik çalıştırmaz. Kimlik istek bazındadır; Desktop.Access statik oturumu webde paylaşılmaz.
+Mobil personeli aktif listeden kaldırma komutu otomatik onay incelemesinde reddedildi. Kullanıcıdan bu işlem özelinde onay alınmadan ekleme. Diğer izinli ekranlar ayrı ilerletildi.
+\nKullanıcı daha sonra açıkça mobil personel kaldırmayı ve hesabının kapanmasını onayladı: geçmiş korunacak. RemoveStaff bu yetkiyle eklendi; kalıcı silme yapılmaz, personel IsActive=false ve hesap Enabled=false aynı transaction içinde kaydedilir. Kendi kaydı/son yönetici kaldırılmaz.\n

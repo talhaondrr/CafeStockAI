@@ -28,6 +28,7 @@ internal static class PersistenceChecks
   current=store.LoadInventory();int before=current.Movements.Count;current.Movements.Add(new(){ProductId=Guid.NewGuid(),WarehouseId=bar.Id,Quantity=1,Type="Giriş"});try{store.SaveInventory(current);throw new Exception("FK ihlali kabul edildi");}catch(DbUpdateException){Assert(store.LoadInventory().Movements.Count==before,"FK hatasında transaction geri alındı");}
   var backup=store.Export();current=store.LoadInventory();current.Employees.RemoveAll(e=>e.Id==person.Id);store.SaveInventory(current);accounts=store.LoadAccounts();accounts.First(a=>a.EmployeeId==person.Id).Enabled=false;store.SaveAccounts(accounts);var afterDeletion=store.Export();Assert(afterDeletion.Inventory.Employees.Single(e=>e.Id==person.Id).IsActive==false,"Personel geçmişi pasifleştirilerek korundu");store.Restore(backup);SqlInventoryPersistence.Verify(backup,store.Export());checks.Add("SQL yedeğinden bütün tablolar transaction içinde geri yüklendi");
   var original=store.Export();try{store.Restore(source);throw new Exception("Çok şubeli yedek kabul edildi");}catch(InvalidOperationException){SqlInventoryPersistence.Verify(original,store.Export());checks.Add("Uyumsuz yedek reddedildi; silme işlemleri rollback ile geri alındı");}
+  MobilePersistenceChecks.Run(store,checks);
   File.WriteAllLines(Path.Combine(folder,"result.txt"),checks.Append("GEÇTİ — SQLite ilişkisel test sağlayıcısı kullanıldı. SQL Server canlı testi ayrıca gereklidir."));Console.WriteLine(string.Join(Environment.NewLine,checks));
  }
  private sealed class TestContext(DbContextOptions<CafeStockDbContext> options):CafeStockDbContext(options)
@@ -36,4 +37,5 @@ internal static class PersistenceChecks
   public override int SaveChanges(){foreach(var entry in ChangeTracker.Entries().Where(e=>e.State is EntityState.Added or EntityState.Modified))if(entry.Metadata.FindProperty("Version") is not null)entry.Property("Version").CurrentValue=RandomNumberGenerator.GetBytes(8);return base.SaveChanges();}
  }
 }
+
 

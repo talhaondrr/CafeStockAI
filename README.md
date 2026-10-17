@@ -56,3 +56,10 @@ Sayım ekranı ve güncel stok raporu, Excel kaynağındaki A/D/G/J sütun grupl
 - Canlı SQL Server bağlantısı agent ortamından doğrulanamadı. Kaydedilmiş bağlantı dosyası tek başına veri aktarımının doğrulaması değildir. SQL kontrolü ve ekle/güncelle → yeniden aç senaryosu normal uygulamada çalıştırılmalıdır.
 - Tamamlanan DevExpress özellik testinde kullanıcı girişleri, yetkiler, sayım onayı, çizelgede ürün sayısı, hücre girişleri, toplamlar ve filtrede taslak korunumu geçti. Son hücre yüksekliği, boş görsel başlığı ve SQL kontrol düğmesi için yeni etkileşimli test başlatılmadı; derleme kontrolü uygulanır.
 - SQLite yalnız ayrı ilişkisel kalıcılık testlerinde kullanılır; üretim veritabanı SQL Server Express'tir.
+
+## Mobil personel ve yönetim arayüzü
+Çözümde CafeStockAI.Mobile projesi vardır. Visual Studio'da bu projeyi başlangıç projesi seçip Mobil Demo ile ayrı örnek verilerde veya Mobil SQL ile mevcut SQL kayıtlarında çalıştırabilirsiniz. Mobil SQL aktarım veya migration yapmaz.
+
+Personel sayım gönderir; müdürler onay/ret ve analiz yapar. İşletme sahibi/genel müdür ürün, personel, hesap ve işletme ayarlarına da erişir. Mobil web ASP.NET Core kullanır; DevExpress masaüstünde korunur. Şu an yalnız localhost; yayın ve mobil veri erişimi kapalıdır.
+
+Ayrıntılar: [Mobil kullanım](docs/MOBIL-KULLANIM.md).

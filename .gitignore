@@ -42,3 +42,7 @@ connection.local.json
 DevExpress_License.txt
 *.licx
 *.corrected
+
+# Mobil oturum anahtarlari
+CafeStockAI.Mobile/keys/
+CafeStockAI.Mobile/App_Data/
