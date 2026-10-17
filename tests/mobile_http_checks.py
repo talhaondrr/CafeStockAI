@@ -27,8 +27,8 @@ try:
  ps=person.login("Demo Personel");ws=person.call("workspace")
  ok(not ps["person"]["manage"] and not ws["staff"] and not ws["analysis"],"Personel yönetici verilerini görmüyor")
  person.call("products",{"id":None,"name":"Yetkisiz","category":"TEST","unit":"Adet","minimumStock":1},403);ok(True,"Personel ürün ekleyemiyor")
- ticket=person.call("counts/begin",{});person.call("counts/submit",{"ticket":ticket["ticket"],"lines":[]},409)
- lines=[{"productId":p["id"],"bar":p["bar"]+(1 if i==0 else 0),"depot":p["depot"]} for i,p in enumerate(ws["stocks"])]
+ ticket=person.call("counts/begin",{"area":"Bar"});person.call("counts/submit",{"ticket":ticket["ticket"],"lines":[]},409)
+ lines=[{"productId":p["id"],"bar":p["bar"]+(1 if i==0 else 0),"depot":None} for i,p in enumerate(ws["stocks"])]
  body={"ticket":ticket["ticket"],"lines":lines};sent=person.call("counts/submit",body);retry=person.call("counts/submit",body)
  pending=person.call("workspace");ok(sent["id"]==retry["id"] and len(pending["counts"])==1,"Tekrarlanan gönderim aynı sayımı döndürüyor")
  ok(pending["stocks"]==ws["stocks"],"Mobil sayım onay öncesinde stok değiştirmiyor")
@@ -44,12 +44,12 @@ try:
  newclient=Client();newclient.login("Test Yeni Personel")
  owner.call("accounts",{"employeeId":new["id"],"enabled":False,"password":None});newclient.call("workspace",expected=401);ok(True,"Kapatılan hesap mevcut mobil oturumda da engellendi")
  owner.call("accounts",{"employeeId":owner_session["person"]["id"],"enabled":False,"password":None},409);ok(True,"Kendi yönetici hesabını kapatma engellendi")
- stale=person.call("counts/begin",{});before=owner.call("workspace");first=before["stocks"][0]
+ stale=person.call("counts/begin",{"area":"Bar"});before=owner.call("workspace");first=before["stocks"][0]
  import uuid
  movement={"id":str(uuid.uuid4()),"productId":first["id"],"area":"Bar","type":"Giriş","quantity":2,"note":"Test"}
  owner.call("movements",movement);owner.call("movements",movement);after=owner.call("workspace")
  ok(after["stocks"][0]["bar"]==before["stocks"][0]["bar"]+2,"Tekrarlanan stok hareketi çoğalmıyor")
- staleLines=[{"productId":p["id"],"bar":p["bar"],"depot":p["depot"]} for p in before["stocks"]]
+ staleLines=[{"productId":p["id"],"bar":p["bar"],"depot":None} for p in before["stocks"]]
  person.call("counts/submit",{"ticket":stale["ticket"],"lines":staleLines},409);ok(True,"Stok değişince eski mobil taslak reddedildi")
  person.call("counts/submit",{"ticket":"bozuk-imza","lines":staleLines},409);ok(True,"İmzalı taslak değiştirilince gönderim reddedildi")
  owner.call("products",{"id":None,"name":"Mobil Test Ürünü","category":"TEST","unit":"Adet","minimumStock":2})
@@ -57,6 +57,23 @@ try:
  owner.call("products/remove",{"id":temp["id"]})
  ok(not any(p["id"]==temp["id"] for p in owner.call("workspace")["stocks"]),"Yönetici ürün ekleme ve aktif listeden kaldırma")
  owner.call("settings",{"business":"Mobil Demo Kontrol"});ok(owner.call("workspace")["business"]=="Mobil Demo Kontrol","İşletme ayarı kaydedildi")
+ person.call("counts/begin",{"area":"Both"},409)
+ bar_ticket=person.call("counts/begin",{"area":"Bar"});depot_ticket=person.call("counts/begin",{"area":"Depo"})
+ areas_before=owner.call("workspace")
+ bar_lines=[{"productId":p["id"],"bar":p["bar"]+1,"depot":None} for p in areas_before["stocks"]]
+ wrong=[dict(line) for line in bar_lines];wrong[0]["depot"]=1
+ person.call("counts/submit",{"ticket":bar_ticket["ticket"],"lines":wrong},409)
+ b=person.call("counts/submit",{"ticket":bar_ticket["ticket"],"lines":bar_lines})
+ owner.call("counts/review",{"id":b["id"],"approved":True,"note":"Bar sayımı"})
+ after_bar=owner.call("workspace")
+ ok(all(p["depot"]==q["depot"] and p["bar"]==q["bar"]+1 for p,q in zip(after_bar["stocks"],areas_before["stocks"])),"Bar onayı yalnız Bar stoğunu değiştiriyor; Depo korunuyor")
+ depot_lines=[{"productId":p["id"],"bar":None,"depot":p["depot"]+2} for p in areas_before["stocks"]]
+ d=person.call("counts/submit",{"ticket":depot_ticket["ticket"],"lines":depot_lines})
+ owner.call("counts/review",{"id":d["id"],"approved":True,"note":"Depo sayımı"})
+ after_depot=owner.call("workspace")
+ ok(all(p["bar"]==q["bar"] and p["depot"]==q["depot"]+2 for p,q in zip(after_depot["stocks"],after_bar["stocks"])),"Depo onayı yalnız Depo stoğunu değiştiriyor; Bar korunuyor")
+ ok({c["area"] for c in after_depot["counts"]}=={"Bar","Depo"},"Alanlar ayrı kayıtlar halinde gösteriliyor")
+ ok(True,"Diğer alanın değişmesi bağımsız sayımı bozmadı; yanlış alana miktar gönderimi reddedildi")
  saved_history=owner.call("workspace")
  owner.call("staff/remove",{"id":ps["person"]["id"]})
  removed=owner.call("workspace")

@@ -65,3 +65,8 @@ Data Protection anahtarları varsayılan olarak LocalApplicationData/CafeStockAI
 - Gerçek telefon ve mobil veri erişimi henüz test edilmedi.
 
 ASP.NET Core antiforgery kaynağı: https://learn.microsoft.com/aspnet/core/security/anti-request-forgery
+
+## Ayrı alan sayımı güncellemesi
+Sayımın başında Bar veya Depo seçilir. Ürün başına yalnız seçilen alanın miktarı girilir. Bar ve Depo ayrı sayım kimlikleriyle kaydedilir, ayrı onaylanır. Alanlar için ayrı kişisel taslaklar saklanır; Alanı değiştir düğmesi miktarları silmeden diğer alana geçer. Sayılmayan alan null saklanır, sıfır kabul edilmez. Bir alanın değişmesi diğer alanın sayımını geçersiz kılmaz. Masaüstü Onay ekranı da bu sayımları alanına göre onaylar; önceki birleşik sayımlar korunur.
+
+Güncel tarayıcı kontrolü: 99 ürün için tek Bar kutusu, Depo kutusu bulunmaması, Bar için 7,5 ve Depo için 12 girildiğinde taslakların ayrı kalması, yenilemede Depo 12 değerinin korunması, Bar sayımının ayrı onaya gönderilmesi. Önceki 19,5 toplamlı birleşik giriş bu güncellemeyle kaldırılmıştır.

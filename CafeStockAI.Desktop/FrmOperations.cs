@@ -1,4 +1,4 @@
-﻿namespace CafeStockAI.Desktop;
+namespace CafeStockAI.Desktop;
 public partial class FrmOperations : DevExpress.XtraEditors.XtraForm, IInventoryPage
 {
  public FrmOperations()
@@ -16,7 +16,7 @@ public partial class FrmOperations : DevExpress.XtraEditors.XtraForm, IInventory
  public void RefreshData() => PageUi.Run(()=>
  {
   var data=Access.View(); var branches=BranchStock.AllNames(data); source.DataSource=branches.ToList(); target.DataSource=branches.ToList(); sourceArea.DataSource=new[]{"Bar","Depo"}; targetArea.DataSource=new[]{"Depo","Bar"}; product.DisplayMember="DisplayName"; product.DataSource=ProductStore.Load().OrderBy(p=>p.Name).ToList();
-  counts.DataSource=data.Counts.OrderByDescending(c=>c.Date).Select(c=>new { c.Id, Tarih=c.Date, Şube=c.BranchName, SayımıYapan=c.Operator, Durum=c.Status, Ürün=c.Lines.Count, Onaylayan=c.Reviewer, Not=c.ReviewNote }).ToList(); if(counts.Columns.Contains("Id")) counts.Columns["Id"].Visible=false;
+  counts.DataSource=data.Counts.OrderByDescending(c=>c.Date).Select(c=>new { c.Id, Tarih=c.Date, Şube=c.BranchName, Alan=CafeStockAI.Application.CountApproval.Area(c), SayımıYapan=c.Operator, Durum=c.Status, Ürün=c.Lines.Count, Onaylayan=c.Reviewer, Not=c.ReviewNote }).ToList(); if(counts.Columns.Contains("Id")) counts.Columns["Id"].Visible=false;
   foreach(var pair in new[]{("SayımıYapan","Sayımı yapan"),("Ürün","Ürün sayısı")}) if(counts.Columns.Contains(pair.Item1))counts.Columns[pair.Item1].HeaderText=pair.Item2;
   if(Access.Global) { Accounts.Sync(); users.DataSource=Accounts.Load().Select(a=>new {a.EmployeeId,KullanıcıAdı=a.Username,Görev=data.Employees.FirstOrDefault(e=>e.Id==a.EmployeeId)?.Role??"Ayrılmış",Şubeler=data.Employees.FirstOrDefault(e=>e.Id==a.EmployeeId)?.BranchesDisplay??"",Durum=a.Enabled?"Aktif":"Kapalı"}).ToList(); if(users.Columns.Contains("EmployeeId"))users.Columns["EmployeeId"].Visible=false;users.Columns["KullanıcıAdı"].HeaderText="Kullanıcı adı"; }
   users.Visible=reset.Visible=toggle.Visible=backup.Visible=restore.Visible=Access.Global; approve.Enabled=reject.Enabled=Access.Approver;

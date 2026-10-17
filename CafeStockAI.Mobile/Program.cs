@@ -104,18 +104,19 @@ commands.MapPost("/api/logout",async(HttpContext c)=>{await c.SignOutAsync();ret
 app.MapGet("/api/workspace",(HttpContext c,MobileWorkspace service)=>{
  var a=service.Snapshot(UserId(c));var person=MobileWorkspace.Person(a,UserId(c));
  var stocks=a.Products.Select(p=>new{p.Id,p.Name,p.Category,p.Unit,p.MinimumStock,image="/images/"+ImageKey.For(p)+".png",bar=MobileWorkspace.Balance(a.Inventory,p.Id,"Bar"),depot=MobileWorkspace.Balance(a.Inventory,p.Id,"Depo")}).ToList();
- var counts=a.Inventory.Counts.Where(v=>v.BranchName=="Elazığ"&&(MobileWorkspace.Approver(person)||v.Operator==person.Name)).OrderByDescending(v=>v.Date).Take(100).Select(v=>new{v.Id,v.Date,v.Operator,v.Status,v.Reviewer,v.ReviewNote,v.ReviewedAt,lines=v.Lines.Select(l=>new{l.ProductId,name=a.Products.FirstOrDefault(p=>p.Id==l.ProductId)?.Name??"Kaldırılmış ürün",unit=a.Products.FirstOrDefault(p=>p.Id==l.ProductId)?.Unit??"",l.BarExpected,l.DepotExpected,l.BarCounted,l.DepotCounted})});
+ var counts=a.Inventory.Counts.Where(v=>v.BranchName=="Elazığ"&&(MobileWorkspace.Approver(person)||v.Operator==person.Name)).OrderByDescending(v=>v.Date).Take(100).Select(v=>new{v.Id,v.Date,v.Operator,v.Status,v.Reviewer,v.ReviewNote,v.ReviewedAt,area=CountApproval.Area(v),lines=v.Lines.Select(l=>new{l.ProductId,name=a.Products.FirstOrDefault(p=>p.Id==l.ProductId)?.Name??"Kaldırılmış ürün",unit=a.Products.FirstOrDefault(p=>p.Id==l.ProductId)?.Unit??"",l.BarExpected,l.DepotExpected,l.BarCounted,l.DepotCounted})});
  var areas=a.Inventory.Warehouses.ToDictionary(w=>w.Id,w=>w.StockArea);
  var movements=MobileWorkspace.Movement(person)?a.Inventory.Movements.OrderByDescending(m=>m.Date).Take(100).Select(m=>new{m.Id,m.Date,m.Type,m.Quantity,m.Note,area=areas.GetValueOrDefault(m.WarehouseId,""),name=a.Products.FirstOrDefault(p=>p.Id==m.ProductId)?.Name??"Kaldırılmış ürün"}).ToArray():[];
  var analysis=MobileWorkspace.Approver(person)?a.Products.Select(p=>new{product=p,model=DemandModel.Train(a.Inventory,p.Id,"Elazığ")}).Where(x=>x.model is not null).Select(x=>new{x.product.Id,x.product.Name,x.product.Unit,sevenDays=StockPlanning.Demand(x.product.Unit,x.model!.SevenDays),mae=x.model!.Error,days=x.model!.Samples,reorder=StockPlanning.Reorder(x.product.Unit,x.model!.SevenDays,x.product.MinimumStock,MobileWorkspace.Balance(a.Inventory,x.product.Id,"Bar")+MobileWorkspace.Balance(a.Inventory,x.product.Id,"Depo"))}).ToArray():[];
  var staff=MobileWorkspace.Global(person)?a.Inventory.Employees.Where(e=>e.IsActive).Select(e=>new{e.Id,e.Name,e.Role,e.Phone,e.HireDate,enabled=a.Accounts.Any(u=>u.EmployeeId==e.Id&&u.Enabled),username=a.Accounts.FirstOrDefault(u=>u.EmployeeId==e.Id)?.Username}).ToArray():[];
  return Results.Ok(new{stocks,counts,movements,analysis,staff,roles=MobileWorkspace.Roles,business=a.Inventory.Settings.BusinessName});
 }).RequireAuthorization();
-commands.MapPost("/api/counts/begin",(HttpContext c,MobileWorkspace service,IDataProtectionProvider dp)=>{
- var ticket=service.Begin(UserId(c));return Results.Ok(new{ticket=dp.CreateProtector("count-ticket-v1").Protect(JsonSerializer.Serialize(ticket)),ticket.Id,ticket.Expires});
+commands.MapPost("/api/counts/begin",(BeginCountInput input,HttpContext c,MobileWorkspace service,IDataProtectionProvider dp)=>{
+ if(input.Area is not("Bar" or "Depo"))throw new InvalidOperationException("Bar veya Depo seçin.");
+ var ticket=service.Begin(UserId(c),input.Area);return Results.Ok(new{ticket=dp.CreateProtector("count-ticket-v2").Protect(JsonSerializer.Serialize(ticket)),ticket.Id,ticket.Expires,area=ticket.Area});
 }).RequireAuthorization();
 commands.MapPost("/api/counts/submit",(SubmitInput input,HttpContext c,MobileWorkspace service,IDataProtectionProvider dp)=>{
- var ticket=JsonSerializer.Deserialize<CountTicket>(dp.CreateProtector("count-ticket-v1").Unprotect(input.Ticket))??throw new InvalidDataException("Geçersiz taslak.");
+ var ticket=JsonSerializer.Deserialize<CountTicket>(dp.CreateProtector("count-ticket-v2").Unprotect(input.Ticket))??throw new InvalidDataException("Geçersiz taslak.");
  var id=service.Submit(UserId(c),ticket,input.Lines);return Results.Ok(new{id,status="Onay bekliyor"});
 }).RequireAuthorization();
 commands.MapPost("/api/counts/review",(ReviewInput input,HttpContext c,MobileWorkspace service)=>{service.Review(UserId(c),input.Id,input.Approved,input.Note);return Results.Ok(new{ok=true});}).RequireAuthorization();
@@ -130,6 +131,7 @@ commands.MapPost("/api/settings",(SettingsInput input,HttpContext c,MobileWorksp
 
 app.Run();
 record LoginInput(string Username,string Password);
+record BeginCountInput(string Area);
 record SubmitInput(string Ticket,List<CountEntry> Lines);
 record ReviewInput(Guid Id,bool Approved,string? Note);
 record IdInput(Guid Id);

@@ -12,6 +12,18 @@ internal static class MobilePersistenceChecks
   Guid id=service.Submit(person.Id,ticket,lines);service.Submit(person.Id,ticket,lines);
   Assert(store.LoadInventory().Movements.Count==original&&store.LoadInventory().Counts.Count(c=>c.Id==id)==1,"Mobil SQL gönderimi bekleyen sayım oluşturur; tekrarında çoğalmaz ve stok değişmez");
   service.Review(manager.Id,id,true,"Mobil kontrol");Assert(store.LoadInventory().Movements.Count==original+lines.Count,"Mobil onay SQL'de durum ve fark hareketlerini birlikte kaydetti");
+  var bt=service.Begin(person.Id,"Bar");var dt=service.Begin(person.Id,"Depo");
+  var stockBefore=store.Export().Inventory;
+  var bc=service.Submit(person.Id,bt,bt.Products.Select(p=>new CountEntry(p.ProductId,p.Bar+1,null)).ToList());
+  var persisted=store.Export().Inventory.Counts.Single(c=>c.Id==bc);
+  Assert(CountApproval.Area(persisted)=="Bar"&&persisted.Lines.All(l=>l.DepotCounted is null&&l.DepotExpected is null),"SQL Bar sayımında Depo alanları sıfır değil null olarak saklanır");
+  service.Review(manager.Id,bc,true,"Bar ayrı sayıldı");
+  var afterBar=store.Export().Inventory;
+  Assert(bt.Products.All(p=>MobileWorkspace.Balance(afterBar,p.ProductId,"Bar")==p.Bar+1&&MobileWorkspace.Balance(afterBar,p.ProductId,"Depo")==p.Depot),"SQL Bar onayı Depo bakiyesini değiştirmedi");
+  var dc=service.Submit(person.Id,dt,dt.Products.Select(p=>new CountEntry(p.ProductId,null,p.Depot+2)).ToList());
+  service.Review(manager.Id,dc,true,"Depo ayrı sayıldı");
+  var afterDepot=store.Export().Inventory;
+  Assert(dt.Products.All(p=>MobileWorkspace.Balance(afterDepot,p.ProductId,"Bar")==MobileWorkspace.Balance(afterBar,p.ProductId,"Bar")&&MobileWorkspace.Balance(afterDepot,p.ProductId,"Depo")==p.Depot+2),"SQL Depo onayı Bar bakiyesini değiştirmedi; diğer alan değişse de bağımsız sayım onaylandı");
   service.SaveStaff(manager.Id,new(null,"Yeni Mobil Personel","Personel","5551234567",new DateTime(2026,10,17)));
   a=store.Export();var added=a.Inventory.Employees.Single(e=>e.Name=="Yeni Mobil Personel");var user=a.Accounts.Single(u=>u.EmployeeId==added.Id);
   Assert(added.Phone=="0555 123 45 67"&&AccountCredentials.Verify(user,"123456"),"Mobil personel ve PBKDF2 hesabı aynı SQL transaction'ında oluşturuldu");

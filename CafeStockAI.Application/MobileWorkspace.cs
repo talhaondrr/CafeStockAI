@@ -3,7 +3,7 @@ using CafeStockAI.Application.Analysis;
 namespace CafeStockAI.Application.Mobile;
 
 public sealed record CountExpected(Guid ProductId,string Unit,decimal Bar,decimal Depot);
-public sealed record CountTicket(Guid Id,Guid EmployeeId,DateTimeOffset Expires,List<CountExpected> Products);
+public sealed record CountTicket(Guid Id,Guid EmployeeId,DateTimeOffset Expires,List<CountExpected> Products,string Area="Both");
 public sealed record CountEntry(Guid ProductId,decimal? Bar,decimal? Depot);
 public sealed record ProductEdit(Guid? Id,string Name,string Category,string Unit,decimal MinimumStock);
 public sealed record StaffEdit(Guid? Id,string Name,string Role,string Phone,DateTime? HireDate);
@@ -30,18 +30,21 @@ public sealed class MobileWorkspace(IInventoryPersistence store)
  private static void Quantity(decimal n){if(n<0||n>=1000000000000m||decimal.Round(n,6)!=n)throw new InvalidOperationException("Miktar negatif olamaz; en fazla 6 ondalık basamak kullanılabilir.");}
  private static string Text(string? s,int max=160){s=(s??"").Trim();if(s.Length>max)throw new InvalidOperationException($"Metin en fazla {max} karakter olabilir.");return s;}
  private static void RequireGlobal(Employee p){if(!Global(p))throw new UnauthorizedAccessException("Genel yönetim yetkisi gerekiyor.");}
- public CountTicket Begin(Guid id)
+ public CountTicket Begin(Guid id,string area="Both")
  {
+  if(area is not("Bar" or "Depo" or "Both"))throw new InvalidOperationException("Bar veya Depo seçin.");
   var a=Snapshot(id);if(a.Products.Any(p=>string.IsNullOrWhiteSpace(p.Unit)))throw new InvalidOperationException("Eksik ürün birimleri yönetici tarafından tamamlanmalı.");if(a.Products.Count==0)throw new InvalidOperationException("Sayılacak ürün bulunamadı.");
-  return new(Guid.NewGuid(),id,DateTimeOffset.UtcNow.AddHours(24),a.Products.Select(p=>new CountExpected(p.Id,p.Unit,Balance(a.Inventory,p.Id,"Bar"),Balance(a.Inventory,p.Id,"Depo"))).ToList());
+  return new(Guid.NewGuid(),id,DateTimeOffset.UtcNow.AddHours(24),a.Products.Select(p=>new CountExpected(p.Id,p.Unit,Balance(a.Inventory,p.Id,"Bar"),Balance(a.Inventory,p.Id,"Depo"))).ToList(),area);
  }
  public Guid Submit(Guid id,CountTicket ticket,List<CountEntry> entries)
  {
   var a=Snapshot(id);var person=Person(a,id);
   if(ticket.EmployeeId!=id||ticket.Expires<DateTimeOffset.UtcNow)throw new UnauthorizedAccessException("Sayım taslağının oturumu veya süresi geçersiz.");
   if(entries.Count==0||entries.Count!=ticket.Products.Count||entries.Select(l=>l.ProductId).Distinct().Count()!=entries.Count)throw new InvalidOperationException("Bütün ürünlerin Bar ve Depo miktarlarını girin.");
+  if(ticket.Area is not("Bar" or "Depo" or "Both"))throw new InvalidOperationException("Geçersiz sayım alanı.");
+  bool bar=ticket.Area!="Depo",depotArea=ticket.Area!="Bar";
   var entered=entries.ToDictionary(l=>l.ProductId);
-  foreach(var expected in ticket.Products){if(!entered.TryGetValue(expected.ProductId,out var entry)||!entry.Bar.HasValue||!entry.Depot.HasValue)throw new InvalidOperationException("Eksik ürün miktarı var. Boş alanlar sıfır kabul edilmez.");Quantity(entry.Bar.Value);Quantity(entry.Depot.Value);}
+  foreach(var expected in ticket.Products){if(!entered.TryGetValue(expected.ProductId,out var entry)||(bar&&!entry.Bar.HasValue)||(depotArea&&!entry.Depot.HasValue)||(!bar&&entry.Bar.HasValue)||(!depotArea&&entry.Depot.HasValue))throw new InvalidOperationException("Yalnız seçilen alanın bütün miktarlarını girin. Diğer alan boş kalmalı.");if(entry.Bar.HasValue)Quantity(entry.Bar.Value);if(entry.Depot.HasValue)Quantity(entry.Depot.Value);}
   var previous=a.Inventory.Counts.FirstOrDefault(c=>c.Id==ticket.Id);
   if(previous is not null)
   {
@@ -49,33 +52,18 @@ public sealed class MobileWorkspace(IInventoryPersistence store)
    return previous.Id;
   }
   if(!a.Products.Select(p=>p.Id).Order().SequenceEqual(ticket.Products.Select(p=>p.ProductId).Order())||a.Products.Any(p=>ticket.Products.Single(e=>e.ProductId==p.Id).Unit!=p.Unit))throw new InvalidOperationException("Ürünler veya birimler değişti. Yeni sayım başlatın.");
-  if(ticket.Products.Any(e=>e.Bar!=Balance(a.Inventory,e.ProductId,"Bar")||e.Depot!=Balance(a.Inventory,e.ProductId,"Depo")))throw new InvalidOperationException("Sayım sırasında stok değişti. Taslağınız korunuyor; güncel stokla yeni sayım başlatın.");
-  var depot=a.Inventory.Warehouses.First(w=>w.BranchName=="Elazığ"&&w.StockArea=="Depo");
-  a.Inventory.Counts.Add(new StockCount{Id=ticket.Id,WarehouseId=depot.Id,BranchName="Elazığ",Operator=person.Name,Status="Onay bekliyor",Date=DateTime.Now,Lines=ticket.Products.Select(e=>new CountLine{ProductId=e.ProductId,BarExpected=e.Bar,DepotExpected=e.Depot,Expected=e.Bar+e.Depot,BarCounted=entered[e.ProductId].Bar,DepotCounted=entered[e.ProductId].Depot,Counted=entered[e.ProductId].Bar!.Value+entered[e.ProductId].Depot!.Value}).ToList()});
+  if(ticket.Products.Any(e=>(bar&&e.Bar!=Balance(a.Inventory,e.ProductId,"Bar"))||(depotArea&&e.Depot!=Balance(a.Inventory,e.ProductId,"Depo"))))throw new InvalidOperationException("Sayım sırasında stok değişti. Taslağınız korunuyor; güncel stokla yeni sayım başlatın.");
+  var depot=a.Inventory.Warehouses.First(w=>w.BranchName=="Elazığ"&&w.StockArea==(ticket.Area=="Bar"?"Bar":"Depo"));
+  a.Inventory.Counts.Add(new StockCount{Id=ticket.Id,WarehouseId=depot.Id,BranchName="Elazığ",Operator=person.Name,Status="Onay bekliyor",Date=DateTime.Now,Lines=ticket.Products.Select(e=>new CountLine{ProductId=e.ProductId,BarExpected=bar?e.Bar:null,DepotExpected=depotArea?e.Depot:null,Expected=(bar?e.Bar:0)+(depotArea?e.Depot:0),BarCounted=entered[e.ProductId].Bar,DepotCounted=entered[e.ProductId].Depot,Counted=(entered[e.ProductId].Bar??0)+(entered[e.ProductId].Depot??0)}).ToList()});
   store.SaveInventory(a.Inventory);return ticket.Id;
  }
  public void Review(Guid id,Guid countId,bool approved,string? note)
  {
   var a=Snapshot(id);var person=Person(a,id);if(!Approver(person))throw new UnauthorizedAccessException("Sayım onaylama yetkiniz yok.");
-  var count=a.Inventory.Counts.SingleOrDefault(c=>c.Id==countId&&c.BranchName=="Elazığ")??throw new InvalidOperationException("Sayım bulunamadı.");
-  if(count.Status!="Onay bekliyor")throw new InvalidOperationException("Sayım zaten sonuçlandırılmış.");
-  note=Text(note,2000);if(!approved&&note.Length==0)throw new InvalidOperationException("Ret gerekçesi girin.");
-  if(approved)
-  {
-   if(!a.Products.Select(p=>p.Id).Order().SequenceEqual(count.Lines.Select(l=>l.ProductId).Order()))throw new InvalidOperationException("Ürün listesi değişti. Yeni sayım gerekiyor.");
-   foreach(var l in count.Lines)
-   {
-    if(l.BarExpected is null||l.DepotExpected is null||l.BarCounted is null||l.DepotCounted is null)throw new InvalidOperationException("Eski sayım alanları eksik; yeniden sayım gerekiyor.");
-    if(Balance(a.Inventory,l.ProductId,"Bar")!=l.BarExpected||Balance(a.Inventory,l.ProductId,"Depo")!=l.DepotExpected)throw new InvalidOperationException("Stok değişti; bu sayım onaylanamaz.");
-    foreach(var area in new[]{"Bar","Depo"})
-    {
-     decimal delta=area=="Bar"?l.BarCounted.Value-l.BarExpected.Value:l.DepotCounted.Value-l.DepotExpected.Value;
-     if(delta!=0)a.Inventory.Movements.Add(new StockMovement{ActorId=id,CountId=count.Id,ProductId=l.ProductId,WarehouseId=a.Inventory.Warehouses.Single(w=>w.BranchName=="Elazığ"&&w.StockArea==area).Id,Quantity=delta,Type="Sayım düzeltmesi",Note=$"Mobil onay • {person.Name} • {area}"});
-    }
-   }
-  }
-  count.Status=approved?"Onaylandı":"Reddedildi";count.Reviewer=person.Name;count.ReviewedAt=DateTime.Now;count.ReviewNote=note;store.SaveInventory(a.Inventory);
+  if(!a.Inventory.Counts.Any(c=>c.Id==countId&&c.BranchName=="Elazığ"))throw new InvalidOperationException("Sayım bulunamadı.");
+  CountApproval.Apply(a.Inventory,a.Products,id,person.Name,countId,approved,Text(note,2000));store.SaveInventory(a.Inventory);
  }
+
  public void AddMovement(Guid id,MovementEdit cmd)
  {
   var a=Snapshot(id);var p=Person(a,id);if(!Movement(p))throw new UnauthorizedAccessException("Stok hareketi yetkiniz yok.");

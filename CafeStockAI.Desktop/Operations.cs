@@ -1,4 +1,4 @@
-﻿using System.IO.Compression;
+using System.IO.Compression;
 using System.Text.Json;
 namespace CafeStockAI.Desktop;
 internal static class Operations
@@ -9,6 +9,10 @@ internal static class Operations
   using var transaction=DataLock.Enter(); var data=InventoryStore.Load(); var count=data.Counts.Single(c=>c.Id==id); Access.RequireBranch(count.BranchName);
   if(count.Status!="Onay bekliyor") throw new InvalidOperationException("Bu sayım zaten sonuçlandırılmış.");
   if(!approve && string.IsNullOrWhiteSpace(note)) throw new InvalidOperationException("Ret gerekçesi yazınız.");
+  if(CafeStockAI.Application.CountApproval.Area(count)!="Bar ve Depo")
+  {
+   CafeStockAI.Application.CountApproval.Apply(data,ProductStore.Load(),Access.EmployeeId,Access.Current?.Name??"Yönetici",id,approve,note.Trim());InventoryStore.Save(data);return;
+  }
   if(approve)
   {
    BranchStock.Commit(count.BranchName,count.Lines.Select(l=>new BranchCountLine { ProductId=l.ProductId, ExpectedBar=l.BarExpected??0, ExpectedDepot=l.DepotExpected??0, CountedBar=l.BarCounted??0, CountedDepot=l.DepotCounted??0 }).ToList(),count.Operator,true,id,note.Trim());
