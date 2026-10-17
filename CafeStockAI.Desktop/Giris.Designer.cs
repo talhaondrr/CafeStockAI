@@ -6,6 +6,9 @@
         protected override void Dispose(bool disposing) { if (disposing && components != null) components.Dispose(); base.Dispose(disposing); }
         private void InitializeComponent()
         {
+            databaseButton = new Button();
+            databaseButton.Name="databaseButton";databaseButton.Text="Elazığ • SQL bağlantısı";databaseButton.Dock=DockStyle.Fill;databaseButton.Height=26;databaseButton.Font=new Font("Segoe UI",9F);databaseButton.FlatStyle=FlatStyle.Flat;databaseButton.BackColor=Color.FromArgb(112,74,45);databaseButton.ForeColor=Color.White;
+
             root = new TableLayoutPanel();
             pnlBrand = new Panel();
             brandLayout = new TableLayoutPanel();
@@ -26,7 +29,7 @@
             lblPassword = new Label();
             txtPassword = new TextBox();
             showPassword = new CheckBox();
-            btnLogin = new Button();
+            btnLogin = new DevExpress.XtraEditors.SimpleButton();
             errorLabel = new Label();
             footer = new Label();
             root.SuspendLayout();
@@ -196,7 +199,7 @@
             formLayout.Controls.Add(showPassword, 0, 7);
             formLayout.Controls.Add(btnLogin, 0, 8);
             formLayout.Controls.Add(errorLabel, 0, 9);
-            formLayout.Controls.Add(footer, 0, 11);
+            databaseButton.Visible = false;
             formLayout.Dock = DockStyle.Fill;
             formLayout.Location = new Point(35, 35);
             formLayout.Name = "formLayout";
@@ -212,7 +215,7 @@
             formLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 52F));
             formLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 48F));
             formLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            formLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 26F));
+            formLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 0F));
             formLayout.Size = new Size(475, 479);
             formLayout.TabIndex = 0;
             //
@@ -302,19 +305,19 @@
             //
             // btnLogin
             //
-            btnLogin.BackColor = Color.FromArgb(112, 74, 45);
+            btnLogin.Appearance.BackColor = Color.FromArgb(112, 74, 45);
             btnLogin.Cursor = Cursors.Hand;
             btnLogin.Dock = DockStyle.Top;
-            btnLogin.FlatAppearance.BorderSize = 0;
-            btnLogin.FlatStyle = FlatStyle.Flat;
-            btnLogin.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            btnLogin.ForeColor = Color.White;
+            btnLogin.ButtonStyle = DevExpress.XtraEditors.Controls.BorderStyles.Simple;
+            btnLogin.Appearance.Options.UseBackColor = true;
+            btnLogin.Appearance.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            btnLogin.Appearance.ForeColor = Color.White;
             btnLogin.Location = new Point(3, 330);
             btnLogin.Name = "btnLogin";
             btnLogin.Size = new Size(469, 44);
             btnLogin.TabIndex = 3;
             btnLogin.Text = "Giriş yap  →";
-            btnLogin.UseVisualStyleBackColor = false;
+            btnLogin.Appearance.Options.UseForeColor = true;
             btnLogin.Click += btnLogin_Click;
             //
             // errorLabel
@@ -369,6 +372,7 @@
         private Label lblBrandTitle, lblBrandSubtitle, brandHeadline, brandDescription, brandFooter, badge, lblLoginTitle, loginSubtitle, lblUsername, lblPassword, errorLabel, footer;
         private TextBox txtUsername, txtPassword;
         private CheckBox showPassword;
-        private Button btnLogin;
+        private DevExpress.XtraEditors.SimpleButton btnLogin;
+        private Button databaseButton;
     }
 }

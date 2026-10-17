@@ -1,6 +1,7 @@
-namespace CafeStockAI.Desktop;
-internal sealed record Forecast(decimal SevenDays, decimal Daily, decimal Error, decimal? Anomaly, int Samples);
-internal static class DemandModel
+using CafeStockAI.Application.Models;
+namespace CafeStockAI.Application.Analysis;
+public sealed record Forecast(decimal SevenDays, decimal Daily, decimal Error, decimal? Anomaly, int Samples);
+public static class DemandModel
 {
  // Ridge regression learns trend and weekday effects separately for each product/branch.
  private static double[] Features(int day,DateTime date) { var x=new double[8];x[0]=1;x[1]=day/30d;int week=(int)date.DayOfWeek; if(week>0)x[week+1]=1;return x; }
@@ -21,3 +22,4 @@ internal static class DemandModel
   return new Forecast(Math.Round((decimal)forecast,2),Math.Round((decimal)forecast/7,3),Math.Round((decimal)error,3),anomaly,count);
  }
 }
+

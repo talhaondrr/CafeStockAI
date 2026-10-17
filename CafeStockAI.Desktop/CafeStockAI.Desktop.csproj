@@ -9,6 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="DevExpress.Win.Grid" Version="26.1.5" />
+    <ProjectReference Include="..\CafeStockAI.Infrastructure\CafeStockAI.Infrastructure.csproj" />
     <EmbeddedResource Include="ProductCatalog.json" />
     <EmbeddedResource Include="Assets\Products\*.png" />
   </ItemGroup>

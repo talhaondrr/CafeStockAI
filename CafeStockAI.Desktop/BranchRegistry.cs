@@ -1,11 +1,4 @@
 ﻿namespace CafeStockAI.Desktop;
-public sealed class Branch
-{
-    public Guid Id { get; set; } = Guid.NewGuid();
-    public string Code { get; set; } = "";
-    public string Name { get; set; } = "";
-    public string Address { get; set; } = "";
-}
 internal static class BranchRegistry
 {
     public static void Initialize(InventoryData data)
@@ -25,6 +18,7 @@ internal static class BranchRegistry
     }
     public static void SaveBranch(Guid? id,string code,string name,string address)
     {
+        if(SingleBranchMode.Enabled && (!id.HasValue || name.Trim()!="Elazığ"))throw new InvalidOperationException("Tek şubeli sürümde yalnız Elazığ kullanılır.");
         Access.RequireGlobal();
         using var transaction = DataLock.Enter();
         var data = InventoryStore.Load(); code = code.Trim(); name = name.Trim();

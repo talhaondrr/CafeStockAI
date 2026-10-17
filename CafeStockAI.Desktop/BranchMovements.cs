@@ -11,7 +11,7 @@ internal static class BranchMovements
         if (quantity <= 0 || type is not ("Giriş" or "Çıkış")) throw new InvalidOperationException("İşlem türü ve sıfırdan büyük miktar gereklidir.");
         if (type == "Çıkış" && BranchStock.Balance(data,productId,branch,area) < quantity) throw new InvalidOperationException("Seçilen şube alanında yeterli stok yok.");
         var target = BranchStock.Area(data,branch,area);
-        void Movement(Guid id,decimal amount) => data.Movements.Add(new StockMovement { ProductId = productId, WarehouseId = id, Type = type, Quantity = amount, Note = note + (Access.Current is Employee actor ? " • " + actor.Name : "") });
+        void Movement(Guid id,decimal amount) => data.Movements.Add(new StockMovement { ActorId=Access.EmployeeId, ProductId = productId, WarehouseId = id, Type = type, Quantity = amount, Note = note + (Access.Current is Employee actor ? " • " + actor.Name : "") });
         if (type == "Giriş") Movement(target.Id,quantity);
         else
         {

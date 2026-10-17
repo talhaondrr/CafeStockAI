@@ -1,6 +1,6 @@
 ﻿namespace CafeStockAI.Desktop;
 
-public partial class FrmProducts : Form, IInventoryPage
+public partial class FrmProducts : DevExpress.XtraEditors.XtraForm, IInventoryPage
 {
     private List<Product> products = new();
     private Guid? selectedId;
@@ -9,7 +9,7 @@ public partial class FrmProducts : Form, IInventoryPage
 
     public FrmProducts()
     {
-        InitializeComponent(); QuantityText.Setup(this);
+        InitializeComponent(); QuantityText.Setup(this); productSheet.ProductSelected += PopulateProduct;
         categoryFilter.SelectedIndexChanged += (_,_) => { if (!settingCategoryFilter) RefreshGrid(); };
         grid.CellFormatting += (_, e) =>
         {
@@ -47,6 +47,7 @@ public partial class FrmProducts : Form, IInventoryPage
         string query = search.Text.Trim();
         string category = categoryFilter.SelectedItem as string ?? "Tüm kategoriler";
         grid.DataSource = products.Where(p => (category == "Tüm kategoriler" || (string.IsNullOrWhiteSpace(p.Category) ? "Kategorisiz" : p.Category) == category) && (p.Name.Contains(query,StringComparison.CurrentCultureIgnoreCase) || p.Code.Contains(query,StringComparison.OrdinalIgnoreCase) || p.Category.Contains(query,StringComparison.CurrentCultureIgnoreCase))).ToList();
+        productSheet.SetRows(((List<Product>)grid.DataSource).Select(p=>new CountDraft{Product=p,ProductId=p.Id,Name=p.Name,Category=p.Category,Unit=p.Unit,ExpectedDepot=p.MinimumStock,IsPreview=true}),false,true);
         grid.ClearSelection();
         ClearEditor();
         status.Text = $"Toplam {products.Count} ürün • Listelenen {grid.Rows.Count} • Birimi eksik {products.Count(p => string.IsNullOrWhiteSpace(p.Unit))}";
@@ -63,6 +64,11 @@ public partial class FrmProducts : Form, IInventoryPage
     private void SelectProduct()
     {
         if (grid.SelectedRows.Count == 0 || grid.SelectedRows[0].DataBoundItem is not Product product) return;
+        PopulateProduct(product);
+    }
+
+    private void PopulateProduct(Product product)
+    {
         mode.Text = "Ürünü düzenle"; saveButton.Text = "Güncelle"; deleteButton.Enabled = loaded && Access.Global;
         selectedId = product.Id; code.Text = product.Code; productName.Text = product.Name; categoryInput.Text = product.Category;
         unit.SelectedItem = product.Unit;
@@ -81,8 +87,8 @@ public partial class FrmProducts : Form, IInventoryPage
         var existing = products.FirstOrDefault(p => p.Id == selectedId);
         try
         {
-            if (existing is not null && existing.Unit != unit.Text && InventoryStore.Load().Movements.Any(m => m.ProductId == existing.Id))
-            { MessageBox.Show("Stok hareketi bulunan ürünün birimi değiştirilemez.", Text); return; }
+            if (existing is not null && existing.Unit != unit.Text && (InventoryStore.Load().Movements.Any(m => m.ProductId == existing.Id) || InventoryStore.Load().Counts.Any(c=>c.Lines.Any(l=>l.ProductId==existing.Id))))
+            { if(MessageBox.Show("Bu ürünün stok veya sayım geçmişi var. Eski kayıt ve miktarlar korunarak yeni birimle ayrı ürün açılsın mı? Yeni ürünün stoğu sıfırdan başlar; eski miktarlar dönüştürülmez.",Text,MessageBoxButtons.YesNo,MessageBoxIcon.Question)!=DialogResult.Yes)return; selectedId=null; code.Text="URN-"+Guid.NewGuid().ToString("N")[..8]; }
         }
         catch (Exception ex) { MessageBox.Show(ex.Message, Text); return; }
         var candidate = new Product { Id = selectedId ?? Guid.NewGuid(), Code = code.Text.Trim(), Name = productName.Text.Trim(), Category = categoryInput.Text.Trim(), SourceCell = existing?.SourceCell ?? "", Unit = unit.SelectedItem.ToString()!, MinimumStock = minimum.Value };
@@ -94,14 +100,9 @@ public partial class FrmProducts : Form, IInventoryPage
     {
         if (!loaded || selectedId is null) return;
         if (!Access.Global) { MessageBox.Show("Ürün silme yetkiniz yok."); return; }
-        try
-        {
-            var data = InventoryStore.Load();
-            if (data.Movements.Any(m => m.ProductId == selectedId) || data.Counts.Any(c => c.Lines.Any(l => l.ProductId == selectedId)))
-            { MessageBox.Show("İşlem veya sayım geçmişi olan ürün silinemez.", Text); return; }
-        }
-        catch (Exception ex) { MessageBox.Show(ex.Message, Text); return; }
-        if (MessageBox.Show("Seçili ürün silinsin mi?", Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
+        if (MessageBox.Show("Seçili ürün aktif ürün listesinden kaldırılsın mı? Yeni stok ve sayım işlemlerinde görünmez. Eski stok hareketleri ve sayım kayıtları korunur. İşlemden önce yedek alınır.", Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
+        try { Operations.CreateBackup(); }
+        catch(Exception ex) { MessageBox.Show("Yedek alınamadığı için ürün kaldırılmadı.\n"+ex.Message,Text); return; }
         Persist(products.Where(p => p.Id != selectedId).ToList());
     }
 

@@ -37,7 +37,9 @@ protected override void Dispose(bool disposing) { if (disposing && components !=
             layout.Controls.Add(descriptionLabel, 0, 1);
             layout.Controls.Add(editor, 0, 2);
             layout.Controls.Add(actions, 0, 3);
-            layout.Controls.Add(grid, 0, 4);
+            var contentHost=new Panel {Dock=DockStyle.Fill};
+            sheet=new StockSheet {Name="sheet",Dock=DockStyle.Fill};contentHost.Controls.Add(grid);contentHost.Controls.Add(sheet);sheet.BringToFront();layout.Controls.Add(contentHost,0,4);
+            viewButton=new Button {Text="Liste görünümü",Size=new Size(145,36),BackColor=Color.FromArgb(112,74,45),ForeColor=Color.White,FlatStyle=FlatStyle.Flat};actions.Controls.Add(viewButton);
             layout.Controls.Add(statusLabel, 0, 5);
             layout.Dock = DockStyle.Fill;
             layout.Location = new Point(0, 0);
@@ -293,6 +295,8 @@ grid.Dock = DockStyle.Fill;
             ResumeLayout(false);
         }
         private DataGridViewTextBoxColumn colBar, colDepotQuantity;
+private StockSheet sheet;
+private Button viewButton;
 private TableLayoutPanel layout;
 private Label titleLabel;
 private Label descriptionLabel;

@@ -1,4 +1,4 @@
-[
+﻿[
   {
     "Id": "074ed3a1-5688-5ca3-8e50-50d2a0ae93ce",
     "Code": "MBC-001",
@@ -643,7 +643,7 @@
     "Code": "MBC-072",
     "Name": "COLD BREW",
     "Category": "TOZ VE KURUTULMUŞ",
-    "Unit": "Kg",
+    "Unit": "Şişe",
     "MinimumStock": 0,
     "SourceCell": "G11"
   },

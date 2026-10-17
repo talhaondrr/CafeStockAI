@@ -13,7 +13,7 @@ businessInputLabel = new Label();
 businessInput = new TextBox();
 operatorInputLabel = new Label();
 operatorInput = new TextBox();
-saveButton = new Button();
+saveButton = new Button(); databaseButton = new Button(); checkDatabaseButton = new DevExpress.XtraEditors.SimpleButton();
 colAyar = new DataGridViewTextBoxColumn();
 colDeğer = new DataGridViewTextBoxColumn();
 ((System.ComponentModel.ISupportInitialize)grid).BeginInit();
@@ -44,6 +44,8 @@ editor.Controls.Add(operatorInputLabel, 1, 0); editor.Controls.Add(operatorInput
 operatorInput.MaxLength = 160;
 actions.Dock = DockStyle.Fill; actions.WrapContents = true;
 saveButton.Text = "Ayarları kaydet"; saveButton.Size = new Size(145,36); saveButton.BackColor = Color.FromArgb(112, 74, 45); saveButton.ForeColor = Color.White; saveButton.FlatStyle = FlatStyle.Flat; saveButton.FlatAppearance.BorderSize = 0; saveButton.Click += Save_Click; actions.Controls.Add(saveButton);
+databaseButton.Name="databaseButton"; databaseButton.Text="Veritabanı bağlantısı"; databaseButton.Size=new Size(180,36); databaseButton.BackColor=Color.FromArgb(112,74,45); databaseButton.ForeColor=Color.White; databaseButton.FlatStyle=FlatStyle.Flat; databaseButton.Click+=Database_Click; actions.Controls.Add(databaseButton);
+checkDatabaseButton.Name="checkDatabaseButton"; checkDatabaseButton.Text="SQL bağlantısını kontrol et"; checkDatabaseButton.Size=new Size(220,36); checkDatabaseButton.Click+=CheckDatabase_Click; actions.Controls.Add(checkDatabaseButton);
 grid.Dock = DockStyle.Fill; grid.AllowUserToAddRows = false; grid.AllowUserToDeleteRows = false; grid.MultiSelect = false; grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect; grid.AutoGenerateColumns = false; grid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill; grid.RowHeadersVisible = false; grid.BackgroundColor = Color.White; grid.BorderStyle = BorderStyle.None; grid.ColumnHeadersHeight = 40; grid.EnableHeadersVisualStyles = false; grid.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(98, 71, 50); grid.ColumnHeadersDefaultCellStyle.ForeColor = Color.White; grid.RowTemplate.Height = 34; grid.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(249, 245, 238); grid.DefaultCellStyle.SelectionBackColor = Color.FromArgb(234, 219, 199); grid.DefaultCellStyle.SelectionForeColor = Color.FromArgb(98, 71, 50);
 grid.ReadOnly = true;
 colAyar.DataPropertyName = "Ayar"; colAyar.HeaderText = "Bilgi";
@@ -79,7 +81,8 @@ private Label businessInputLabel;
 private TextBox businessInput;
 private Label operatorInputLabel;
 private TextBox operatorInput;
-private Button saveButton;
+private DevExpress.XtraEditors.SimpleButton checkDatabaseButton;
+private Button saveButton; private Button databaseButton;
 private DataGridViewTextBoxColumn colAyar;
 private DataGridViewTextBoxColumn colDeğer;
 } }

@@ -3,14 +3,6 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 namespace CafeStockAI.Desktop;
-public sealed class UserAccount
-{
- public Guid EmployeeId { get; set; }
- public string Username { get; set; } = "";
- public string Salt { get; set; } = "";
- public string Hash { get; set; } = "";
- public bool Enabled { get; set; } = true;
-}
 internal sealed class DataLock : IDisposable
 {
  private readonly Mutex mutex;
@@ -22,8 +14,8 @@ internal static class Accounts
 {
  private static string FilePath => Path.Combine(InventoryStore.DirectoryPath,"accounts.json");
  internal static string Key(string s) => s.Trim().Normalize(NormalizationForm.FormKC).ToUpper(new CultureInfo("tr-TR"));
- public static List<UserAccount> Load() => File.Exists(FilePath) ? JsonSerializer.Deserialize<List<UserAccount>>(File.ReadAllText(FilePath)) ?? throw new InvalidDataException("Kullanıcı dosyası geçersiz.") : new();
- private static void Save(List<UserAccount> users) { Directory.CreateDirectory(InventoryStore.DirectoryPath); File.WriteAllText(FilePath+".tmp", JsonSerializer.Serialize(users)); File.Move(FilePath+".tmp",FilePath,true); }
+ public static List<UserAccount> Load() => SqlMode.Store is { } sql ? sql.LoadAccounts() : File.Exists(FilePath) ? JsonSerializer.Deserialize<List<UserAccount>>(File.ReadAllText(FilePath)) ?? throw new InvalidDataException("Kullanıcı dosyası geçersiz.") : new();
+ private static void Save(List<UserAccount> users) { if(SqlMode.Store is { } sql) {sql.SaveAccounts(users);return;} Directory.CreateDirectory(InventoryStore.DirectoryPath); File.WriteAllText(FilePath+".tmp", JsonSerializer.Serialize(users)); File.Move(FilePath+".tmp",FilePath,true); }
  private static void SetPassword(UserAccount user,string password) { user.Salt = Convert.ToBase64String(RandomNumberGenerator.GetBytes(16)); user.Hash = Convert.ToBase64String(Rfc2898DeriveBytes.Pbkdf2(password,Convert.FromBase64String(user.Salt),210000,HashAlgorithmName.SHA256,32)); }
  public static void Sync()
  {

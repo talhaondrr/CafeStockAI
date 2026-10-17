@@ -53,7 +53,8 @@
             layout.Controls.Add(mode, 0, 1);
             layout.Controls.Add(editor, 0, 2);
             layout.Controls.Add(actions, 0, 3);
-            layout.Controls.Add(grid, 0, 4);
+            productSheet = new StockSheet { Dock = DockStyle.Fill, Name = "productSheet" };
+            layout.Controls.Add(productSheet, 0, 4);
             layout.Controls.Add(status, 0, 5);
             layout.Dock = DockStyle.Fill;
             layout.Location = new Point(0, 0);
@@ -362,6 +363,7 @@
             ((System.ComponentModel.ISupportInitialize)grid).EndInit();
             ResumeLayout(false);
         }
+        private StockSheet productSheet;
         private TableLayoutPanel layout;
         private Label title;
         private Label mode;

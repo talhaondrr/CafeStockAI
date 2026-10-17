@@ -1,5 +1,5 @@
 ﻿namespace CafeStockAI.Desktop;
-public partial class FrmDashboard : Form
+public partial class FrmDashboard : DevExpress.XtraEditors.XtraForm
 {
     private readonly Dictionary<Type, Form> pages = new();
     private Control[] overviewControls = Array.Empty<Control>();
@@ -30,7 +30,7 @@ public partial class FrmDashboard : Form
     {
         foreach (var button in navigation) button.BackColor = button == active ? Color.FromArgb(98,71,50) : Color.FromArgb(35,33,30);
     }
-    internal void OpenPage<T>(Button active) where T : Form, IInventoryPage, new()
+    internal void OpenPage<T>(Button active) where T : DevExpress.XtraEditors.XtraForm, IInventoryPage, new()
     {
         PageUi.Run(() =>
         {

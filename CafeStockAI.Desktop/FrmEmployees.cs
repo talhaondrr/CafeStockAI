@@ -1,5 +1,5 @@
 ﻿namespace CafeStockAI.Desktop;
-public partial class FrmEmployees : Form, IInventoryPage
+public partial class FrmEmployees : DevExpress.XtraEditors.XtraForm, IInventoryPage
 {
     private Guid? selected;
     private List<Employee> rows = new();

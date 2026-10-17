@@ -1,9 +1,9 @@
 ﻿namespace CafeStockAI.Desktop;
-public partial class FrmOperations : Form, IInventoryPage
+public partial class FrmOperations : DevExpress.XtraEditors.XtraForm, IInventoryPage
 {
  public FrmOperations()
  {
-  InitializeComponent(); QuantityText.Setup(this); if(!Access.Global)tabs.TabPages.Remove(accountTab); counts.SelectionChanged+=(_,_)=>ShowLines();
+  InitializeComponent(); if(SingleBranchMode.Enabled)tabs.TabPages.RemoveAt(1); QuantityText.Setup(this); if(!Access.Global)tabs.TabPages.Remove(accountTab); counts.SelectionChanged+=(_,_)=>ShowLines();
   restore.Click+=(_,_)=>PageUi.Run(()=>{Access.RequireGlobal();using var dialog=new OpenFileDialog{Filter="CafeStock yedeği (*.zip)|*.zip"};if(dialog.ShowDialog(this)!=DialogResult.OK)return;if(MessageBox.Show("Seçilen yedek geri yüklenecek. Mevcut kayıtlar önce yedeklenecek ve oturum kapanacak. Devam edilsin mi?",Text,MessageBoxButtons.YesNo)!=DialogResult.Yes)return;Operations.Restore(dialog.FileName);(TopLevelControl as Form)?.Close();});
   logout.Click+=(_,_)=> (TopLevelControl as Form)?.Close();
   approve.Click+=(_,_)=>Review(true); reject.Click+=(_,_)=>Review(false);

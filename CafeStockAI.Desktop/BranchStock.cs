@@ -44,7 +44,7 @@ internal static class BranchStock
         {
             void Adjust(Warehouse target,decimal delta,string area)
             {
-                void Movement(Guid id,decimal amount) => data.Movements.Add(new StockMovement { ProductId = line.ProductId, WarehouseId = id, Type = "Sayım düzeltmesi", Quantity = amount, Note = $"{branch} / {area} sayımı: {count.Id} / {count.Operator}" });
+                void Movement(Guid id,decimal amount) => data.Movements.Add(new StockMovement { ActorId=Access.EmployeeId, CountId=count.Id, ProductId = line.ProductId, WarehouseId = id, Type = "Sayım düzeltmesi", Quantity = amount, Note = $"{branch} / {area} sayımı: {count.Id} / {count.Operator}" });
                 if (delta > 0) Movement(target.Id,delta);
                 if (delta < 0)
                 {

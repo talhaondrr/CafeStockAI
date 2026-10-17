@@ -10,16 +10,84 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Çözüm Öğeleri", "Çöz
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CafeStockAI.Domain", "CafeStockAI.Domain\CafeStockAI.Domain.csproj", "{23E6C0B3-4E1D-4838-BFAA-EB18B66C149F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CafeStockAI.Application", "CafeStockAI.Application\CafeStockAI.Application.csproj", "{DC770FAD-7509-4127-A65F-0001A9C3F366}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CafeStockAI.Infrastructure", "CafeStockAI.Infrastructure\CafeStockAI.Infrastructure.csproj", "{C2FEEE53-1C12-4D82-AF51-E4295A6CDCD0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CafeStockAI.DatabaseTool", "CafeStockAI.DatabaseTool\CafeStockAI.DatabaseTool.csproj", "{CA21244A-EAD8-4A1C-AD64-A506C8F29725}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{41473647-C7B6-4969-823C-FCB7DAE1C205}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{41473647-C7B6-4969-823C-FCB7DAE1C205}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41473647-C7B6-4969-823C-FCB7DAE1C205}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{41473647-C7B6-4969-823C-FCB7DAE1C205}.Debug|x64.Build.0 = Debug|Any CPU
+		{41473647-C7B6-4969-823C-FCB7DAE1C205}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{41473647-C7B6-4969-823C-FCB7DAE1C205}.Debug|x86.Build.0 = Debug|Any CPU
 		{41473647-C7B6-4969-823C-FCB7DAE1C205}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{41473647-C7B6-4969-823C-FCB7DAE1C205}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41473647-C7B6-4969-823C-FCB7DAE1C205}.Release|x64.ActiveCfg = Release|Any CPU
+		{41473647-C7B6-4969-823C-FCB7DAE1C205}.Release|x64.Build.0 = Release|Any CPU
+		{41473647-C7B6-4969-823C-FCB7DAE1C205}.Release|x86.ActiveCfg = Release|Any CPU
+		{41473647-C7B6-4969-823C-FCB7DAE1C205}.Release|x86.Build.0 = Release|Any CPU
+		{23E6C0B3-4E1D-4838-BFAA-EB18B66C149F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23E6C0B3-4E1D-4838-BFAA-EB18B66C149F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23E6C0B3-4E1D-4838-BFAA-EB18B66C149F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{23E6C0B3-4E1D-4838-BFAA-EB18B66C149F}.Debug|x64.Build.0 = Debug|Any CPU
+		{23E6C0B3-4E1D-4838-BFAA-EB18B66C149F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{23E6C0B3-4E1D-4838-BFAA-EB18B66C149F}.Debug|x86.Build.0 = Debug|Any CPU
+		{23E6C0B3-4E1D-4838-BFAA-EB18B66C149F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23E6C0B3-4E1D-4838-BFAA-EB18B66C149F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23E6C0B3-4E1D-4838-BFAA-EB18B66C149F}.Release|x64.ActiveCfg = Release|Any CPU
+		{23E6C0B3-4E1D-4838-BFAA-EB18B66C149F}.Release|x64.Build.0 = Release|Any CPU
+		{23E6C0B3-4E1D-4838-BFAA-EB18B66C149F}.Release|x86.ActiveCfg = Release|Any CPU
+		{23E6C0B3-4E1D-4838-BFAA-EB18B66C149F}.Release|x86.Build.0 = Release|Any CPU
+		{DC770FAD-7509-4127-A65F-0001A9C3F366}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC770FAD-7509-4127-A65F-0001A9C3F366}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC770FAD-7509-4127-A65F-0001A9C3F366}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{DC770FAD-7509-4127-A65F-0001A9C3F366}.Debug|x64.Build.0 = Debug|Any CPU
+		{DC770FAD-7509-4127-A65F-0001A9C3F366}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DC770FAD-7509-4127-A65F-0001A9C3F366}.Debug|x86.Build.0 = Debug|Any CPU
+		{DC770FAD-7509-4127-A65F-0001A9C3F366}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC770FAD-7509-4127-A65F-0001A9C3F366}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC770FAD-7509-4127-A65F-0001A9C3F366}.Release|x64.ActiveCfg = Release|Any CPU
+		{DC770FAD-7509-4127-A65F-0001A9C3F366}.Release|x64.Build.0 = Release|Any CPU
+		{DC770FAD-7509-4127-A65F-0001A9C3F366}.Release|x86.ActiveCfg = Release|Any CPU
+		{DC770FAD-7509-4127-A65F-0001A9C3F366}.Release|x86.Build.0 = Release|Any CPU
+		{C2FEEE53-1C12-4D82-AF51-E4295A6CDCD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2FEEE53-1C12-4D82-AF51-E4295A6CDCD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2FEEE53-1C12-4D82-AF51-E4295A6CDCD0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C2FEEE53-1C12-4D82-AF51-E4295A6CDCD0}.Debug|x64.Build.0 = Debug|Any CPU
+		{C2FEEE53-1C12-4D82-AF51-E4295A6CDCD0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C2FEEE53-1C12-4D82-AF51-E4295A6CDCD0}.Debug|x86.Build.0 = Debug|Any CPU
+		{C2FEEE53-1C12-4D82-AF51-E4295A6CDCD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2FEEE53-1C12-4D82-AF51-E4295A6CDCD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2FEEE53-1C12-4D82-AF51-E4295A6CDCD0}.Release|x64.ActiveCfg = Release|Any CPU
+		{C2FEEE53-1C12-4D82-AF51-E4295A6CDCD0}.Release|x64.Build.0 = Release|Any CPU
+		{C2FEEE53-1C12-4D82-AF51-E4295A6CDCD0}.Release|x86.ActiveCfg = Release|Any CPU
+		{C2FEEE53-1C12-4D82-AF51-E4295A6CDCD0}.Release|x86.Build.0 = Release|Any CPU
+		{CA21244A-EAD8-4A1C-AD64-A506C8F29725}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA21244A-EAD8-4A1C-AD64-A506C8F29725}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA21244A-EAD8-4A1C-AD64-A506C8F29725}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CA21244A-EAD8-4A1C-AD64-A506C8F29725}.Debug|x64.Build.0 = Debug|Any CPU
+		{CA21244A-EAD8-4A1C-AD64-A506C8F29725}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CA21244A-EAD8-4A1C-AD64-A506C8F29725}.Debug|x86.Build.0 = Debug|Any CPU
+		{CA21244A-EAD8-4A1C-AD64-A506C8F29725}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA21244A-EAD8-4A1C-AD64-A506C8F29725}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA21244A-EAD8-4A1C-AD64-A506C8F29725}.Release|x64.ActiveCfg = Release|Any CPU
+		{CA21244A-EAD8-4A1C-AD64-A506C8F29725}.Release|x64.Build.0 = Release|Any CPU
+		{CA21244A-EAD8-4A1C-AD64-A506C8F29725}.Release|x86.ActiveCfg = Release|Any CPU
+		{CA21244A-EAD8-4A1C-AD64-A506C8F29725}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

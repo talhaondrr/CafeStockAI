@@ -1,5 +1,5 @@
 ﻿namespace CafeStockAI.Desktop;
-public partial class FrmWarehouses : Form, IInventoryPage
+public partial class FrmWarehouses : DevExpress.XtraEditors.XtraForm, IInventoryPage
 {
     private sealed class BranchView
     {
@@ -16,7 +16,7 @@ public partial class FrmWarehouses : Form, IInventoryPage
         grid.SelectionChanged += (_,_) => ShowBranch();
         searchInput.TextChanged += (_,_) => Filter(); Clear();
     }
-    public void RefreshData() => PageUi.Run(() => { data = Access.View(); saveButton.Enabled=Access.Global; Filter(); });
+    public void RefreshData() => PageUi.Run(() => { data = Access.View(); saveButton.Enabled=Access.Global && !SingleBranchMode.Enabled; Filter(); });
     private List<Employee> Members(string name) => data.Employees.Where(p => p.AssignedBranches.Contains(name)).OrderBy(p => p.Role == "Şube Müdürü" ? 0 : 1).ThenBy(p => p.Name).ToList();
     private string Managers(string name)
     {
@@ -30,7 +30,7 @@ public partial class FrmWarehouses : Form, IInventoryPage
     private void ShowBranch()
     {
         if (grid.SelectedRows.Count == 0 || grid.SelectedRows[0].DataBoundItem is not BranchView row) return;
-        selected = row.Id; nameInput.Text = row.Name; saveButton.Text = "Güncelle"; deleteButton.Enabled = Access.Global;
+        selected = row.Id; nameInput.Text = row.Name; saveButton.Text = "Güncelle"; deleteButton.Enabled = Access.Global && !SingleBranchMode.Enabled;
         detailTitle.Text = row.Name + " şubesi";
         var people = Members(row.Name);
         detailSummary.Text = $"Şube müdürü: {Managers(row.Name)}\nAtanan personel sayısı: {people.Count}";

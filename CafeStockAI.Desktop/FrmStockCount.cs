@@ -19,16 +19,18 @@ public sealed class CountDraft : INotifyPropertyChanged
     private void Changed(string property) { PropertyChanged?.Invoke(this,new PropertyChangedEventArgs(property)); PropertyChanged?.Invoke(this,new PropertyChangedEventArgs(nameof(Total))); PropertyChanged?.Invoke(this,new PropertyChangedEventArgs(nameof(Difference))); }
     public event PropertyChangedEventHandler? PropertyChanged;
 }
-public partial class FrmStockCount : Form, IInventoryPage
+public partial class FrmStockCount : DevExpress.XtraEditors.XtraForm, IInventoryPage
 {
     private BindingList<CountDraft> draft = new();
     private string? activeBranch;
     private List<CountDraft> previewRows = new();
+    private bool sheetMode=true;
     private bool settingCategories;
     private string previousCategory = "Tüm kategoriler";
     public FrmStockCount()
     {
-        InitializeComponent(); QuantityText.Setup(this); completeButton.Enabled = false; cancelButton.Enabled = false;
+        InitializeComponent(); QuantityText.Setup(this);
+        sheet.InvalidInput+=message=>statusLabel.Text=message;viewButton.Click+=(_,_)=>{if(!grid.EndEdit()||!sheet.EndEdit())return;sheetMode=!sheetMode;ApplyCategory();}; completeButton.Enabled = false; cancelButton.Enabled = false;
         grid.CellFormatting += (_,e) =>
         {
             if (e.RowIndex < 0 || grid.Columns[e.ColumnIndex].Name != "imageColumn") return;
@@ -47,7 +49,7 @@ public partial class FrmStockCount : Form, IInventoryPage
     public void RefreshData() => PageUi.Run(() =>
     {
         if (activeBranch is not null) return;
-        var selected = branchInput.SelectedItem as string; var data = Access.View(); branchInput.DataSource = BranchStock.AllNames(data); branchInput.SelectedItem = selected; if (selected is null) branchInput.SelectedIndex = -1; operatorInput.Text = data.Settings.OperatorName;
+        var selected = branchInput.SelectedItem as string; var data = Access.View(); branchInput.DataSource = BranchStock.AllNames(data); branchInput.SelectedItem = selected; if (selected is null) branchInput.SelectedIndex = SingleBranchMode.Enabled && data.Branches.Count==1 ? 0 : -1; operatorInput.Text = data.Settings.OperatorName;
         if (branchInput.SelectedItem is not null) Preview();
         statusLabel.Text = $"{data.Counts.Count} tamamlanmış sayım. Şube seçin; Bar ve Depo miktarlarını aynı tabloda girin.";
     });
@@ -74,13 +76,14 @@ public partial class FrmStockCount : Form, IInventoryPage
     private void ApplyCategory()
     {
         if (settingCategories) return;
-        if (!grid.EndEdit())
+        if (!grid.EndEdit() || !sheet.EndEdit())
         {
             settingCategories = true; categoryInput.SelectedItem = previousCategory; settingCategories = false; return;
         }
         string category = categoryInput.SelectedItem as string ?? "Tüm kategoriler";
         IEnumerable<CountDraft> source = activeBranch is null ? previewRows : draft;
         grid.DataSource = new BindingList<CountDraft>(source.Where(p => category == "Tüm kategoriler" || (string.IsNullOrWhiteSpace(p.Category) ? "Kategorisiz" : p.Category) == category).ToList());
+        sheet.SetRows(((BindingList<CountDraft>)grid.DataSource).ToList(),activeBranch is not null);sheet.Visible=sheetMode;grid.Visible=!sheetMode;viewButton.Text=sheetMode?"Liste görünümü":"Çizelge görünümü";
         previousCategory = category;
     }
     private void Start_Click(object? sender,EventArgs e) => PageUi.Run(() =>
@@ -98,7 +101,7 @@ public partial class FrmStockCount : Form, IInventoryPage
     private void Complete_Click(object? sender,EventArgs e) => PageUi.Run(() =>
     {
         if (activeBranch is null) return;
-        if (!grid.EndEdit()) throw new InvalidOperationException("Geçersiz sayım hücresini düzeltin.");
+        if (!grid.EndEdit() || !sheet.EndEdit()) throw new InvalidOperationException("Geçersiz sayım hücresini düzeltin.");
         if (draft.Any(l => l.BarCounted is null || l.DepotCounted is null)) throw new InvalidOperationException("Her ürünün Bar ve Depo miktarlarını giriniz.");
         if (MessageBox.Show(activeBranch + " şubesinin sayımı yönetici onayına gönderilsin mi?",Text,MessageBoxButtons.YesNo,MessageBoxIcon.Question) != DialogResult.Yes) return;
         BranchStock.Complete(activeBranch,draft.Select(l => new BranchCountLine { ProductId = l.ProductId, ExpectedBar = l.ExpectedBar, ExpectedDepot = l.ExpectedDepot, CountedBar = l.BarCounted!.Value, CountedDepot = l.DepotCounted!.Value }).ToList(),operatorInput.Text);
@@ -109,5 +112,5 @@ public partial class FrmStockCount : Form, IInventoryPage
         if (MessageBox.Show("Kaydedilmemiş şube sayımı iptal edilsin mi?",Text,MessageBoxButtons.YesNo) != DialogResult.Yes) return;
         Reset(); RefreshData();
     }
-    private void Reset() { activeBranch = null; grid.DataSource = null; branchInput.Enabled = true; startButton.Enabled = true; completeButton.Enabled = false; cancelButton.Enabled = false; }
+    private void Reset() { grid.CancelEdit();sheet.CancelEdit();activeBranch = null; grid.DataSource = null; branchInput.Enabled = true; startButton.Enabled = true; completeButton.Enabled = false; cancelButton.Enabled = false; }
 }

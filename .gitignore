@@ -30,3 +30,15 @@ Yedekler/
 KurulumOncesi-*/
 *.initialized
 *.imported
+
+# SQL dosyalari ve yerel baglanti ayarlari
+*.mdf
+*.ldf
+*.ndf
+appsettings.Local.json
+connection.local.json
+
+# DevExpress lisans dosyalari
+DevExpress_License.txt
+*.licx
+*.corrected

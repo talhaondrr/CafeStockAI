@@ -2,79 +2,6 @@
 
 namespace CafeStockAI.Desktop;
 
-public sealed class Warehouse
-{
-    public string StockArea { get; set; } = "";
-    public string BranchName { get; set; } = "";
-    public Guid Id { get; set; } = Guid.NewGuid();
-    public string Code { get; set; } = "";
-    public string Name { get; set; } = "";
-    public string Location { get; set; } = "";
-}
-public sealed class Employee
-{
-    public DateTime? HireDate { get; set; }
-    [System.Text.Json.Serialization.JsonIgnore] public string HireDateDisplay => HireDate?.ToString("dd.MM.yyyy") ?? "Belirtilmedi";
-    public List<string> Branches { get; set; } = new();
-    [System.Text.Json.Serialization.JsonIgnore]
-    public List<string> AssignedBranches => Branches is { Count: > 0 } ? Branches : string.IsNullOrWhiteSpace(BranchName) ? new List<string>() : new List<string> { BranchName };
-    [System.Text.Json.Serialization.JsonIgnore]
-    public string BranchesDisplay => string.Join(", ",AssignedBranches);
-    public string BranchName { get; set; } = "";
-    public Guid Id { get; set; } = Guid.NewGuid();
-    public string Name { get; set; } = "";
-    public string Role { get; set; } = "";
-    public string Phone { get; set; } = "";
-}
-public sealed class StockMovement
-{
-    public Guid Id { get; set; } = Guid.NewGuid();
-    public Guid ProductId { get; set; }
-    public Guid WarehouseId { get; set; }
-    public DateTime Date { get; set; } = DateTime.Now;
-    public string Type { get; set; } = "";
-    public decimal Quantity { get; set; }
-    public string Note { get; set; } = "";
-}
-public sealed class StockCount
-{
-    public string Status { get; set; } = "Onaylandı";
-    public string Reviewer { get; set; } = "";
-    public string ReviewNote { get; set; } = "";
-    public DateTime? ReviewedAt { get; set; }
-    public string BranchName { get; set; } = "";
-    public Guid Id { get; set; } = Guid.NewGuid();
-    public Guid WarehouseId { get; set; }
-    public DateTime Date { get; set; } = DateTime.Now;
-    public string Operator { get; set; } = "";
-    public List<CountLine> Lines { get; set; } = new();
-}
-public sealed class CountLine
-{
-    public decimal? BarExpected { get; set; }
-    public decimal? BarCounted { get; set; }
-    public decimal? DepotExpected { get; set; }
-    public decimal? DepotCounted { get; set; }
-    public Guid ProductId { get; set; }
-    public decimal Expected { get; set; }
-    public decimal Counted { get; set; }
-}
-public sealed class AppSettings
-{
-    public string BusinessName { get; set; } = "CafeStock AI";
-    public string OperatorName { get; set; } = "";
-}
-public sealed class InventoryData
-{
-    public List<Branch> Branches { get; set; } = new();
-    public bool BranchRegistryInitialized { get; set; }
-    public List<Warehouse> Warehouses { get; set; } = new();
-    public List<Employee> Employees { get; set; } = new();
-    public List<StockMovement> Movements { get; set; } = new();
-    public List<StockCount> Counts { get; set; } = new();
-    public AppSettings Settings { get; set; } = new();
-    public decimal Balance(Guid product, Guid warehouse) => Movements.Where(m => m.ProductId == product && m.WarehouseId == warehouse).Sum(m => m.Quantity);
-}
 internal static class InventoryStore
 {
     internal static string? TestDirectory { get; set; }
@@ -82,6 +9,7 @@ internal static class InventoryStore
     private static string FilePath => Path.Combine(DirectoryPath, "inventory.json");
     public static InventoryData Load()
     {
+        if (SqlMode.Store is { } sql) return sql.LoadInventory();
         if (!File.Exists(FilePath)) { var empty = new InventoryData(); BranchRegistry.Initialize(empty); return empty; }
         var data = JsonSerializer.Deserialize<InventoryData>(File.ReadAllText(FilePath)) ?? throw new InvalidDataException("İşletme kayıtları geçersiz.");
         if (data.Warehouses is null || data.Employees is null || data.Movements is null || data.Counts is null || data.Settings is null)
@@ -91,6 +19,7 @@ internal static class InventoryStore
     }
     public static void Save(InventoryData data)
     {
+        if (SqlMode.Store is { } sql) { sql.SaveInventory(data); return; }
         Directory.CreateDirectory(DirectoryPath);
         if (File.Exists(FilePath) && !File.Exists(FilePath + ".before-branch-v2.bak")) File.Copy(FilePath,FilePath + ".before-branch-v2.bak");
         File.WriteAllText(FilePath + ".tmp", JsonSerializer.Serialize(data, new JsonSerializerOptions { WriteIndented = true }));

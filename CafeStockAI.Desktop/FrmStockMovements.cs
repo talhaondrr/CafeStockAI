@@ -1,5 +1,5 @@
 ﻿namespace CafeStockAI.Desktop;
-public partial class FrmStockMovements : Form, IInventoryPage
+public partial class FrmStockMovements : DevExpress.XtraEditors.XtraForm, IInventoryPage
 {
     public FrmStockMovements()
     {

@@ -18,6 +18,7 @@ internal static class Operations
  }
  public static void Transfer(Guid product,string source,string sourceArea,string target,string targetArea,decimal quantity)
  {
+  if(SingleBranchMode.Enabled)throw new InvalidOperationException("Tek şubeli sürümde transfer sonraki aşamaya ertelendi.");
   Access.RequireMovement(source); Access.RequireMovement(target);
   if(quantity<=0 || (source==target&&sourceArea==targetArea)) throw new InvalidOperationException("Farklı kaynak/hedef ve pozitif miktar seçiniz.");
   if(sourceArea is not("Bar" or "Depo") || targetArea is not("Bar" or "Depo")) throw new InvalidOperationException("Bar/Depo alanını seçiniz.");
@@ -38,6 +39,7 @@ internal static class Operations
  internal static string CreateBackup()
  {
   using var transaction=DataLock.Enter(); string folder=Path.Combine(InventoryStore.DirectoryPath,"Yedekler"); Directory.CreateDirectory(folder); string file=Path.Combine(folder,$"CafeStock-{DateTime.Now:yyyyMMdd-HHmmss}-{Guid.NewGuid().ToString("N")[..4]}.zip");
+  if(SqlMode.Store is { } sql) {var archive=sql.Export();using var zip=ZipFile.Open(file,ZipArchiveMode.Create);void Entry(string name,object value){using var writer=new StreamWriter(zip.CreateEntry(name).Open());writer.Write(JsonSerializer.Serialize(value));}Entry("inventory.json",archive.Inventory);Entry("products.json",archive.Products);Entry("accounts.json",archive.Accounts);Entry("locations.json",archive.LocationAliases??new Dictionary<Guid,Guid>());return file;}
   using(var zip=ZipFile.Open(file,ZipArchiveMode.Create)) foreach(string name in new[]{"inventory.json","products.json","accounts.json"}) if(File.Exists(Path.Combine(InventoryStore.DirectoryPath,name))) zip.CreateEntryFromFile(Path.Combine(InventoryStore.DirectoryPath,name),name);
   return file;
  }
@@ -54,6 +56,7 @@ internal static class Operations
   bool Unique(IEnumerable<Guid> ids)=>ids.Count()==ids.Distinct().Count();
   var pids=products.Select(p=>p.Id).ToHashSet();var wids=data.Warehouses.Select(w=>w.Id).ToHashSet();
   if(!Unique(pids)||!Unique(products.Select(p=>p.Id))||!Unique(data.Warehouses.Select(w=>w.Id))||!Unique(data.Employees.Select(e=>e.Id))||!Unique(data.Counts.Select(c=>c.Id))||!Unique(users.Select(u=>u.EmployeeId))||users.Where(u=>u.Enabled).GroupBy(u=>Accounts.Key(u.Username)).Any(g=>g.Count()>1)||data.Movements.Any(m=>!pids.Contains(m.ProductId)||!wids.Contains(m.WarehouseId))||data.Counts.Any(c=>c.Lines is null||c.Lines.Any(l=>!pids.Contains(l.ProductId)||l.Counted<0))||users.Any(u=>Convert.FromBase64String(u.Salt).Length!=16||Convert.FromBase64String(u.Hash).Length!=32)||!users.Any(u=>u.Enabled&&data.Employees.Any(e=>e.Id==u.EmployeeId&&e.Role is "İşletme Sahibi" or "Genel Müdür")))throw new InvalidDataException("Yedek kayıtları tutarsız veya yönetici hesabı eksik.");
+  if(SqlMode.Store is { } sql){Dictionary<Guid,Guid>? aliases=null;if(archive.GetEntry("locations.json") is { } entry){if(entry.Length>5000000)throw new InvalidDataException("Alan eşleme yedeği geçersiz.");using var reader=new StreamReader(entry.Open());aliases=JsonSerializer.Deserialize<Dictionary<Guid,Guid>>(reader.ReadToEnd());}Backup();sql.Restore(new CafeStockAI.Application.InventoryArchive(data,products,users,aliases));Access.EmployeeId=null;return;}
   string before=Backup();var originals=names.ToDictionary(n=>n,n=>File.Exists(Path.Combine(InventoryStore.DirectoryPath,n))?File.ReadAllText(Path.Combine(InventoryStore.DirectoryPath,n)):null);
   try { foreach(string name in names)File.WriteAllText(Path.Combine(InventoryStore.DirectoryPath,name+".restore"),content[name]);foreach(string name in names)File.Move(Path.Combine(InventoryStore.DirectoryPath,name+".restore"),Path.Combine(InventoryStore.DirectoryPath,name),true); }
   catch { foreach(var pair in originals){string path=Path.Combine(InventoryStore.DirectoryPath,pair.Key);if(pair.Value is null){if(File.Exists(path))File.Delete(path);}else File.WriteAllText(path,pair.Value);}throw new IOException("Geri yükleme başarısız; önceki kayıtlar korundu. Yedek: "+before); }

@@ -5,8 +5,8 @@ internal static class Program
     [STAThread]
     static void Main(string[] args)
     {
-        Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
-        Application.ThreadException += (_, e) => ReportError(e.Exception);
+        System.Windows.Forms.Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+        System.Windows.Forms.Application.ThreadException += (_, e) => ReportError(e.Exception);
         AppDomain.CurrentDomain.UnhandledException += (_, e) => ReportError(e.ExceptionObject as Exception ?? new Exception(e.ExceptionObject.ToString()));
         try
         {
@@ -34,11 +34,13 @@ internal static class Program
             }
             using var applicationMutex=new Mutex(true,"Local\\CafeStockAI.Application",out bool firstInstance);
             if(!firstInstance){MessageBox.Show("CafeStock AI zaten açık. Açık uygulamayı kullanın veya önce kapatın.");return;}
-            DemoData.Initialize();
-            Accounts.Sync();
+            SqlMode.Initialize();
+            if(!SqlMode.Configured || SqlMode.Enabled) ProductStore.ApplyColdBrewCorrection();
+            if (!SqlMode.Configured) { DemoData.Initialize(); SingleBranchMode.Initialize(); }
+            if (!SqlMode.Configured || SqlMode.Enabled) Accounts.Sync();
             string dailyBackup=Path.Combine(InventoryStore.DirectoryPath,"Yedekler");
-            if(!Directory.Exists(dailyBackup)||!Directory.EnumerateFiles(dailyBackup,"CafeStock-"+DateTime.Now.ToString("yyyyMMdd")+"-*.zip").Any())Operations.CreateBackup();
-            Application.Run(new FrmLogin());
+            if((!SqlMode.Configured || SqlMode.Enabled) && (!Directory.Exists(dailyBackup)||!Directory.EnumerateFiles(dailyBackup,"CafeStock-"+DateTime.Now.ToString("yyyyMMdd")+"-*.zip").Any()))Operations.CreateBackup();
+            System.Windows.Forms.Application.Run(new FrmLogin());
         }
         catch (Exception ex) { ReportError(ex); }
     }

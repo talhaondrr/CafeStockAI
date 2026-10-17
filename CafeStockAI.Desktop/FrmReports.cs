@@ -1,8 +1,10 @@
 ﻿namespace CafeStockAI.Desktop;
-public partial class FrmReports : Form, IInventoryPage
+public partial class FrmReports : DevExpress.XtraEditors.XtraForm, IInventoryPage
 {
+    private bool sheetMode=true;
     private sealed class ReportRow
     {
+        public Guid ProductId {get;set;}
         public DateTime? Tarih { get; set; }
         public string Ürün { get; set; } = "";
         public string Depo { get; set; } = "";
@@ -15,7 +17,7 @@ public partial class FrmReports : Form, IInventoryPage
     }
     public FrmReports()
     {
-        InitializeComponent(); QuantityText.Setup(this);
+        InitializeComponent(); QuantityText.Setup(this);viewButton.Click+=(_,_)=>{sheetMode=!sheetMode;Render();};
         reportInput.Items.AddRange(new object[] { "Güncel şube stokları", "Stok hareketleri", "Sayım sonuçları" }); reportInput.SelectedIndex = 0;
         fromInput.Value = DateTime.Today.AddDays(-30); toInput.Value = DateTime.Today;
         reportInput.SelectedIndexChanged += (_,_) => UpdateDates(); UpdateDates();
@@ -43,7 +45,7 @@ public partial class FrmReports : Form, IInventoryPage
             foreach (var product in products)
             {
                 decimal bar = BranchStock.Balance(data,product.Id,branch,"Bar"), depot = BranchStock.Balance(data,product.Id,branch,"Depo");
-                rows.Add(new ReportRow { Ürün = product.DisplayName, Depo = branch == "" ? "Şubesiz eski kayıtlar" : branch, İşlem = "Güncel stok", Bar = bar, DepoMiktar = depot, Miktar = bar+depot, Birim = product.UnitDisplay, Açıklama = bar+depot <= product.MinimumStock ? "Kritik stok" : "Normal" });
+                rows.Add(new ReportRow { ProductId=product.Id, Ürün = product.DisplayName, Depo = branch == "" ? "Şubesiz eski kayıtlar" : branch, İşlem = "Güncel stok", Bar = bar, DepoMiktar = depot, Miktar = bar+depot, Birim = product.UnitDisplay, Açıklama = bar+depot <= product.MinimumStock ? "Kritik stok" : "Normal" });
             }
         }
         else if (reportInput.SelectedIndex == 1)
@@ -54,7 +56,10 @@ public partial class FrmReports : Form, IInventoryPage
                 rows.Add(new ReportRow { Tarih = count.Date, Ürün = PageUi.ProductName(products,line.ProductId), Depo = string.IsNullOrWhiteSpace(count.BranchName) ? PageUi.WarehouseName(data,count.WarehouseId) : count.BranchName, İşlem = "Sayım farkı", Bar = line.BarCounted, DepoMiktar = line.DepotCounted, Miktar = line.Counted-line.Expected, Birim = products.FirstOrDefault(p => p.Id == line.ProductId)?.Unit ?? "", Açıklama = $"Sistem: {QuantityText.Format(line.Expected)} / Sayılan toplam: {QuantityText.Format(line.Counted)} / {count.Operator} / {count.Status}" });
         colBar.Visible = colDepotQuantity.Visible = reportInput.SelectedIndex != 1;
         colMiktar.HeaderText = reportInput.SelectedIndex == 0 ? "Toplam" : reportInput.SelectedIndex == 2 ? "Toplam Fark" : "Miktar";
-        PageUi.Bind(grid,rows); statusLabel.Text = $"{rows.Count} satır. Şube stokları Bar ve Depo olarak ayrı gösterilir.";
+        PageUi.Bind(grid,rows);
+        bool current=reportInput.SelectedIndex==0;viewButton.Enabled=current;sheet.Visible=current&&sheetMode;grid.Visible=!sheet.Visible;viewButton.Text=sheet.Visible?"Liste görünümü":"Çizelge görünümü";layout.RowStyles[2].Height=current?80:165;
+        if(current)sheet.SetRows(rows.GroupBy(r=>r.ProductId).Select(g=>{var p=products.Single(p=>p.Id==g.Key);return new CountDraft{Product=p,ProductId=p.Id,Name=p.Name,Category=p.Category,Unit=p.UnitDisplay,IsPreview=true,ExpectedBar=g.Sum(r=>r.Bar??0),ExpectedDepot=g.Sum(r=>r.DepoMiktar??0)};}),false);
+        statusLabel.Text = $"{rows.Count} satır. Şube stokları Bar ve Depo olarak ayrı gösterilir.";
     }
     private void Refresh_Click(object? sender,EventArgs e) => PageUi.Run(Render);
     private void Export_Click(object? sender,EventArgs e) => PageUi.Run(() => PageUi.ExportCsv(grid,this));
