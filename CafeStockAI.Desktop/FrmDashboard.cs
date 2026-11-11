@@ -195,16 +195,17 @@ public partial class FrmDashboard : DevExpress.XtraEditors.XtraForm
 
     private void RefreshOverview() => PageUi.Run(() =>
     {
-        var data = Access.View();
+        var data = Access.View(out var signedIn);
         var products = ProductStore.Load();
         Text = data.Settings.BusinessName + " - Yönetim Paneli";
         lblTotalProductsValue.Text = products.Count.ToString();
-        lblTotalWarehousesValue.Text = BranchStock.AllNames(data).Count.ToString();
+        var branches = BranchStock.AllNames(data);
+        var balances = BranchStock.IndexBalances(data);
+        lblTotalWarehousesValue.Text = branches.Count.ToString();
         lblTodayMovementsValue.Text = data.Movements.Count(m => m.Date.Date == DateTime.Today).ToString();
-        lblCriticalStockValue.Text = products.Count(p => BranchStock.AllNames(data).Any(b => BranchStock.Balance(data, p.Id, b, "Bar") + BranchStock.Balance(data, p.Id, b, "Depo") <= p.MinimumStock)).ToString();
-        operatorLabel.Text = Access.Current is Employee signedIn ? signedIn.Name + " / " + signedIn.Role : string.IsNullOrWhiteSpace(data.Settings.OperatorName) ? data.Settings.BusinessName + "  /  Yönetim Paneli" : data.Settings.OperatorName + "  /  " + data.Settings.BusinessName;
+        operatorLabel.Text = signedIn is not null ? signedIn.Name + " / " + signedIn.Role : string.IsNullOrWhiteSpace(data.Settings.OperatorName) ? data.Settings.BusinessName + "  /  Yönetim Paneli" : data.Settings.OperatorName + "  /  " + data.Settings.BusinessName;
         warehouseGrid.Rows.Clear();
-        foreach (var branch in BranchStock.AllNames(data))
+        foreach (var branch in branches)
         {
             var last = data.Counts.Where(c => c.BranchName == branch || (string.IsNullOrWhiteSpace(c.BranchName) && data.Warehouses.Any(w => w.Id == c.WarehouseId && w.BranchName == branch))).OrderByDescending(c => c.Date).FirstOrDefault();
             warehouseGrid.Rows.Add(branch, last?.Date.Date == DateTime.Today ? last.Status : "Sayım bekleniyor", last?.Date.ToString("dd.MM HH:mm") ?? "Henüz sayılmadı", last?.Lines.Count.ToString() ?? "—");
@@ -213,8 +214,9 @@ public partial class FrmDashboard : DevExpress.XtraEditors.XtraForm
         weeklyChart.Values = Enumerable.Range(0, 7).Select(i => data.Movements.Count(m => m.Date.Date == DateTime.Today.AddDays(i - 6))).ToArray();
         criticalGrid.Rows.Clear();
         var criticalRows = (
-            from branch in BranchStock.AllNames(data)from product in products
-            let balance = BranchStock.Balance(data, product.Id, branch, "Bar") + BranchStock.Balance(data, product.Id, branch, "Depo")
+            from branch in branches
+            from product in products
+            let balance = balances.GetValueOrDefault((product.Id, branch, "Bar")) + balances.GetValueOrDefault((product.Id, branch, "Depo"))
             where balance <= product.MinimumStock
             orderby balance
             select new
@@ -225,6 +227,7 @@ public partial class FrmDashboard : DevExpress.XtraEditors.XtraForm
             }
 
         ).ToList();
+        lblCriticalStockValue.Text = criticalRows.Select(r => r.Product.Id).Distinct().Count().ToString();
         foreach (var item in criticalRows.Take(8))
             criticalGrid.Rows.Add(ProductImages.Get(item.Product), item.Product.Name, item.Branch, $"{QuantityText.Format(item.Balance)} {item.Product.UnitDisplay}", $"{QuantityText.Format(item.Product.MinimumStock)} {item.Product.UnitDisplay}");
         var todayCounts = data.Counts.Count(c => c.Date.Date == DateTime.Today && c.Status == "Onaylandı");

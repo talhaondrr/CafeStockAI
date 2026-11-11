@@ -12,6 +12,21 @@ internal static class BranchStock
 {
     public static string AreaOf(Warehouse warehouse) => warehouse.StockArea == "Bar" || (string.IsNullOrEmpty(warehouse.StockArea) && warehouse.Name.Equals("Bar", StringComparison.CurrentCultureIgnoreCase)) ? "Bar" : "Depo";
     public static decimal Balance(InventoryData data, Guid product, string branch, string area) => data.Warehouses.Where(w => w.BranchName == branch && AreaOf(w) == area).Sum(w => data.Balance(product, w.Id));
+    public static Dictionary<(Guid Product, string Branch, string Area), decimal> IndexBalances(InventoryData data)
+    {
+        var warehouses = data.Warehouses.ToDictionary(w => w.Id);
+        var balances = new Dictionary<(Guid, string, string), decimal>();
+        foreach (var movement in data.Movements)
+        {
+            if (!warehouses.TryGetValue(movement.WarehouseId, out var warehouse))
+                continue;
+            var key = (movement.ProductId, warehouse.BranchName, AreaOf(warehouse));
+            balances[key] = balances.GetValueOrDefault(key) + movement.Quantity;
+        }
+
+        return balances;
+    }
+
     public static List<string> AllNames(InventoryData data)
     {
         BranchRegistry.Initialize(data);

@@ -138,11 +138,12 @@ public partial class FrmAnalysis : DevExpress.XtraEditors.XtraForm, IInventoryPa
             && data.Movements.Any(DemandModel.IsExample)
             && !data.Movements.Any(m => m.Type == "Çıkış" && !DemandModel.IsExample(m));
         string selected = warehouseInput.SelectedItem as string ?? "Tüm şubeler";
+        var balances = BranchStock.IndexBalances(data);
         analysisRows = (
             from branch in BranchStock.AllNames(data)
             where selected == "Tüm şubeler" || branch == selected
             from p in products
-            let balance = BranchStock.Balance(data, p.Id, branch, "Bar") + BranchStock.Balance(data, p.Id, branch, "Depo")
+            let balance = balances.GetValueOrDefault((p.Id, branch, "Bar")) + balances.GetValueOrDefault((p.Id, branch, "Depo"))
             let forecast = DemandModel.Train(data, p.Id, branch, sample)
             select new AnalysisRow(p, branch, balance, forecast, PurchasePlan.Create(p.Unit, balance, p.MinimumStock, forecast))
         ).OrderBy(r => r.Plan.Rank).ThenByDescending(r => r.Sipariş).ThenBy(r => r.Ürün).ToList();

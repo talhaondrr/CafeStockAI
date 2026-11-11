@@ -30,12 +30,22 @@ internal static class Access
             throw new UnauthorizedAccessException("Stok hareketi düzenleme yetkiniz yok.");
     }
 
-    public static InventoryData View()
+    public static InventoryData View() => View(out _);
+
+    public static InventoryData View(out Employee? person)
     {
         var data = InventoryStore.Load();
-        if (Global)
+        person = null;
+        if (Test)
             return data;
-        var person = Current ?? throw new UnauthorizedAccessException("Önce sisteme giriş yapınız.");
+
+        if (EmployeeId is not Guid id || !Accounts.Load().Any(u => u.EmployeeId == id && u.Enabled))
+            throw new UnauthorizedAccessException("Önce sisteme giriş yapınız.");
+        person = data.Employees.FirstOrDefault(e => e.Id == id)
+            ?? throw new UnauthorizedAccessException("Önce sisteme giriş yapınız.");
+        if (EmployeePermissions.CanManage(person))
+            return data;
+
         var allowed = person.AssignedBranches.ToHashSet();
         data.Branches.RemoveAll(b => !allowed.Contains(b.Name));
         data.Warehouses.RemoveAll(w => !allowed.Contains(w.BranchName));

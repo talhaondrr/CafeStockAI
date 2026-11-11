@@ -4,6 +4,7 @@ public partial class FrmStockMovements : DevExpress.XtraEditors.XtraForm, IInven
     private readonly TextBox historySearch = new();
     private readonly Label historyCount = new();
     private List<PageUi.MovementRow> movementRows = [];
+    private Dictionary<(Guid Product, string Branch, string Area), decimal> balances = new();
 
     public FrmStockMovements()
     {
@@ -23,6 +24,7 @@ public partial class FrmStockMovements : DevExpress.XtraEditors.XtraForm, IInven
     {
         var data = Access.View();
         var products = ProductStore.Load();
+        balances = BranchStock.IndexBalances(data);
         PageUi.Choices(productInput, products.OrderBy(p => p.Category).ThenBy(p => p.Name).ToList(), "DisplayName");
         branchInput.DataSource = BranchStock.AllNames(data);
         branchInput.SelectedIndex = branchInput.Items.Count == 1 ? 0 : -1;
@@ -102,7 +104,8 @@ public partial class FrmStockMovements : DevExpress.XtraEditors.XtraForm, IInven
         grid.ColumnHeadersDefaultCellStyle.Padding = new Padding(7);
         grid.DefaultCellStyle.Padding = new Padding(7, 3, 7, 3);
         grid.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(253, 250, 246);
-        grid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
+        grid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+        grid.DefaultCellStyle.WrapMode = DataGridViewTriState.False;
         float[] weights = [95, 150, 85, 100, 64, 52, 135];
         for (int index = 0; index < grid.Columns.Count; index++)
             grid.Columns[index].FillWeight = weights[index];
@@ -196,7 +199,7 @@ public partial class FrmStockMovements : DevExpress.XtraEditors.XtraForm, IInven
         statusLabel.Text = "";
         quantityInputLabel.Text = productInput.SelectedItem is Product selected ? $"Miktar · {selected.UnitDisplay}" : "Miktar";
         if (productInput.SelectedItem is Product product && branchInput.SelectedItem is string branch && areaInput.SelectedItem is string area)
-            statusLabel.Text = $"{branch} / {area} mevcut stok: {QuantityText.Format(BranchStock.Balance(Access.View(), product.Id, branch, area))} {product.UnitDisplay}";
+            statusLabel.Text = $"{branch} / {area} mevcut stok: {QuantityText.Format(balances.GetValueOrDefault((product.Id, branch, area)))} {product.UnitDisplay}";
     });
     private void Refresh_Click(object? sender, EventArgs e) => RefreshData();
     private void Save_Click(object? sender, EventArgs e) => PageUi.Run(() =>
