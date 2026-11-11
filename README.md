@@ -18,6 +18,8 @@ SQL bir kez etkinleştirildikten sonra bağlantı kesilirse uygulama sessizce JS
 
 ## Katmanlar
 
+Kodun klasörlere göre açıklaması ve kontrol komutları: [Mimari rehberi](docs/MIMARI.md).
+
 - **Domain:** ilişkisel varlıklar; ürün doğrulaması ve sayım durum geçişleri.
 - **Application:** taşıma modelleri, IInventoryPersistence ve sorgu arayüzleri, Elazığ aktarım dönüşümü, yerel tüketim tahmin modeli.
 - **Infrastructure:** EF Core SQL Server 8.0.32, 17 ilişkisel tablo, migration/snapshot, SQL okuma/yazma, transaction, sürüm kontrolü, aktarım ve geri yükleme doğrulaması.

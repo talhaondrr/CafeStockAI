@@ -1,18 +1,84 @@
 <!doctype html>
 <html lang="tr">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#35281f"><title>CafeStock AI · Mobil</title><link rel="stylesheet" href="/app.css"><script src="/app.js" defer></script></head>
-<body>
-<div id="toast" role="status" aria-live="polite"></div>
-<section id="loginPage" class="login-page">
- <div class="brand-mark" aria-hidden="true">☕</div><p class="eyebrow">ŞUBEN CEBİNDE</p><h1>CafeStock <em>AI</em></h1><p class="login-intro">İyi kahvenin arkasında<br>düzenli bir ekip var.</p>
- <div class="login-card"><h2>Tekrar hoş geldin</h2><p>Hesabınla giriş yap, kaldığın yerden devam et.</p>
- <form id="loginForm"><label>Kullanıcı adı<input id="username" name="username" autocomplete="username" placeholder="Adın ve soyadın" required maxlength="160"></label><label>Şifre<div class="password-wrap"><input id="password" type="password" autocomplete="current-password" placeholder="Şifren" required maxlength="128"><button id="showPassword" type="button" class="text-button" aria-label="Şifreyi göster">Göster</button></div></label><div id="loginError" class="error" role="alert"></div><button type="submit" class="primary full">Giriş yap <span>→</span></button></form></div>
- <p id="loginMode" class="login-note"></p><p class="login-footer">Elazığ • Bar & Depo yönetimi</p>
-</section>
-<div id="shell" class="shell" hidden>
- <header class="topbar"><a href="#" id="brandHome" class="wordmark">☕ CafeStock <b>AI</b></a><button id="logout" class="avatar" aria-label="Çıkış yap"></button></header>
- <div id="modeBanner" class="mode-banner" hidden>ÖRNEK VERİLER · Yalnızca geliştirme ortamı</div>
- <aside id="sideNav" class="side-nav"></aside><main id="main" tabindex="-1"></main><nav id="bottomNav" class="bottom-nav" aria-label="Ana gezinme"></nav>
-</div>
-<dialog id="modal"><div class="dialog-head"><h2 id="modalTitle"></h2><button id="closeModal" class="icon-button" aria-label="Kapat">×</button></div><div id="modalBody"></div></dialog>
-</body></html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#35281f" />
+    <title>CafeStock AI · Stok Yönetimi</title>
+    <link rel="stylesheet" href="/app.css" />
+    <link rel="stylesheet" href="/phone-preview.css" />
+    <script src="/phone-preview.js" defer></script>
+    <script src="/count-workflow.js" defer></script>
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <div id="toast" role="status" aria-live="polite"></div>
+    <section id="loginPage" class="login-page">
+      <div class="brand-mark" aria-hidden="true">☕</div>
+      <h1>CafeStock <em>AI</em></h1>
+      <p class="login-intro">
+        Elazığ şubesi · Bar ve Depo
+      </p>
+      <div class="login-card">
+        <h2>Oturum aç</h2>
+        <form id="loginForm">
+          <label
+            >Kullanıcı adı<input
+              id="username"
+              name="username"
+              autocomplete="username"
+              required
+              maxlength="160" /></label
+          ><label
+            >Şifre
+            <div class="password-wrap">
+              <input
+                id="password"
+                type="password"
+                autocomplete="current-password"
+                required
+                maxlength="128"
+              /><button
+                id="showPassword"
+                type="button"
+                class="text-button"
+                aria-label="Şifreyi göster"
+              >
+                Göster
+              </button>
+            </div></label
+          >
+          <div id="loginError" class="error" role="alert"></div>
+          <button type="submit" class="primary full">
+            Giriş yap <span>→</span>
+          </button>
+        </form>
+      </div>
+      <p id="loginMode" class="login-note"></p>
+    </section>
+    <div id="shell" class="shell" hidden>
+      <header class="topbar">
+        <a href="#" id="brandHome" class="wordmark">☕ CafeStock <b>AI</b></a
+        ><button id="logout" class="avatar" aria-label="Çıkış yap"></button>
+      </header>
+      <div id="modeBanner" class="mode-banner" hidden>
+        ÖRNEK VERİLER · Yalnızca geliştirme ortamı
+      </div>
+      <nav id="sideNav" class="side-nav" aria-label="Ana gezinme"></nav>
+      <main id="main" tabindex="-1"></main>
+      <nav id="bottomNav" class="bottom-nav" aria-label="Ana gezinme"></nav>
+    </div>
+    <dialog id="modal">
+      <div class="dialog-head">
+        <h2 id="modalTitle"></h2>
+        <button id="closeModal" class="icon-button" aria-label="Kapat">
+          ×
+        </button>
+      </div>
+      <div id="modalBody"></div>
+    </dialog>
+  </body>
+</html>

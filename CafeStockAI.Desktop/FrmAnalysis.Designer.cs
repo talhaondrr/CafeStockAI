@@ -56,7 +56,9 @@ colSınır.DataPropertyName = "Sınır"; colSınır.HeaderText = "Kritik Sınır
 colGün.DataPropertyName = "Gün"; colGün.HeaderText = "Tahmini Kalan Gün";
 colÖneri.DataPropertyName = "Öneri"; colÖneri.HeaderText = "Öneri";
 grid.Columns.AddRange(new DataGridViewColumn[] { colÜrün, colDepo, colStok, colBirim, colSınır, colGün, colÖneri });
-grid.Columns.Add(new DataGridViewTextBoxColumn{DataPropertyName="Tahmin",HeaderText="7 günlük ihtiyaç"});grid.Columns.Add(new DataGridViewTextBoxColumn{DataPropertyName="Hata",HeaderText="Test hatası (günlük)"});
+grid.Columns.Insert(0, new DataGridViewTextBoxColumn { DataPropertyName = "Öncelik", HeaderText = "Öncelik", FillWeight = 115 });
+grid.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Tahmin", HeaderText = "7 günlük ihtiyaç" });
+grid.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Sipariş", HeaderText = "Önerilen sipariş" });
 grid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells; grid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize; grid.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
 statusLabel.Text = "Henüz kayıt yok."; statusLabel.AutoSize = true; statusLabel.ForeColor = Color.FromArgb(124, 102, 80);
 layout.Name = "layout";

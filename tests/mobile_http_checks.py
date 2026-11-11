@@ -41,7 +41,7 @@ try:
  owner.call("staff",{"id":None,"name":"Test Yeni Personel","role":"Personel","phone":"5551234567","hireDate":"2026-10-17"})
  staff=owner.call("workspace")["staff"];new=next(p for p in staff if p["name"]=="Test Yeni Personel")
  ok(new["phone"]=="0555 123 45 67" and new["enabled"],"Personel ve hesap birlikte oluşturuldu; telefon biçimlendi")
- newclient=Client();newclient.login("Test Yeni Personel")
+ newclient=Client();newclient.login(new["username"])
  owner.call("accounts",{"employeeId":new["id"],"enabled":False,"password":None});newclient.call("workspace",expected=401);ok(True,"Kapatılan hesap mevcut mobil oturumda da engellendi")
  owner.call("accounts",{"employeeId":owner_session["person"]["id"],"enabled":False,"password":None},409);ok(True,"Kendi yönetici hesabını kapatma engellendi")
  stale=person.call("counts/begin",{"area":"Bar"});before=owner.call("workspace");first=before["stocks"][0]
@@ -80,7 +80,7 @@ try:
  ok(not any(p["id"]==ps["person"]["id"] for p in removed["staff"]) and len(removed["counts"])==len(saved_history["counts"]) and len(removed["movements"])==len(saved_history["movements"]),"Personel kaldırıldı; geçmiş sayım ve hareketler korundu")
  person.call("session",expected=401);ok(True,"Kaldırılan personelin açık oturumu kapandı")
  owner.call("staff/remove",{"id":owner_session["person"]["id"]},409);ok(True,"Yönetici kendisini personel listesinden kaldıramıyor")
- for asset in ("/","/app.js","/app.css","/images/bottle.png"):
+ for asset in ("/","/app.js","/count-workflow.js","/phone-preview.js","/app.css","/images/bottle.png"):
   response=urllib.request.urlopen(base+asset,timeout=10);ok(response.status==200,asset+" sunuluyor")
  ok(all("hash" not in p and "salt" not in p for p in staff),"HTTP personel yanıtında parola hash/salt yok")
  checks.append("TÜM HTTP KONTROLLERİ GEÇTİ — Yalıtılmış bellek içi demo; canlı SQL testi değildir.")

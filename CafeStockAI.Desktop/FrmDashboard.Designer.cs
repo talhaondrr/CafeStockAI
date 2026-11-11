@@ -344,14 +344,15 @@
             overviewLayout.Location = new Point(0, 0);
             overviewLayout.Name = "overviewLayout";
             overviewLayout.Padding = new Padding(22, 16, 22, 20);
-            overviewLayout.RowCount = 7;
+            overviewLayout.RowCount = 6;
+            overviewLayout.AutoSize = true;
+            overviewLayout.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             overviewLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 64F));
             overviewLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 64F));
-            overviewLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 118F));
+            overviewLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 122F));
             overviewLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 250F));
-            overviewLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 230F));
-            overviewLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 220F));
-            overviewLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 18F));
+            overviewLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 270F));
+            overviewLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 260F));
             overviewLayout.Size = new Size(1188, 1000);
             overviewLayout.TabIndex = 0;
             //
@@ -366,7 +367,7 @@
             topBar.Location = new Point(25, 19);
             topBar.Name = "topBar";
             topBar.Padding = new Padding(6, 10, 6, 10);
-            topBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            topBar.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             topBar.Size = new Size(1138, 58);
             topBar.TabIndex = 0;
             //
@@ -395,8 +396,8 @@
             //
             // headingPanel
             //
-            headingPanel.Controls.Add(lblDashboardTitle);
             headingPanel.Controls.Add(lblDashboardDescription);
+            headingPanel.Controls.Add(lblDashboardTitle);
             headingPanel.Dock = DockStyle.Fill;
             headingPanel.Location = new Point(25, 83);
             headingPanel.Name = "headingPanel";
@@ -408,7 +409,8 @@
             lblDashboardTitle.AutoSize = true;
             lblDashboardTitle.Font = new Font("Segoe UI", 21F, FontStyle.Bold);
             lblDashboardTitle.ForeColor = Color.FromArgb(56, 43, 31);
-            lblDashboardTitle.Location = new Point(6, 0);
+            lblDashboardTitle.Dock = DockStyle.Top;
+            lblDashboardTitle.Height = 36;
             lblDashboardTitle.Name = "lblDashboardTitle";
             lblDashboardTitle.Size = new Size(322, 38);
             lblDashboardTitle.TabIndex = 0;
@@ -419,7 +421,7 @@
             lblDashboardDescription.AutoSize = true;
             lblDashboardDescription.Font = new Font("Segoe UI", 10F);
             lblDashboardDescription.ForeColor = Color.FromArgb(130, 111, 91);
-            lblDashboardDescription.Location = new Point(8, 38);
+            lblDashboardDescription.Dock = DockStyle.Top;
             lblDashboardDescription.Name = "lblDashboardDescription";
             lblDashboardDescription.Size = new Size(367, 19);
             lblDashboardDescription.TabIndex = 1;
@@ -1069,14 +1071,14 @@
             //
             // FrmDashboard
             //
-            AutoScaleDimensions = new SizeF(7F, 17F);
-            AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(243, 237, 227);
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
+            BackColor = Color.FromArgb(247, 243, 237);
             ClientSize = new Size(1440, 960);
             Controls.Add(pnlContent);
             Controls.Add(pnlSidebar);
             Font = new Font("Segoe UI", 10F);
-            MinimumSize = new Size(1180, 780);
+            MinimumSize = new Size(960, 620);
             Name = "FrmDashboard";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "CafeStock AI - Yönetim Paneli";

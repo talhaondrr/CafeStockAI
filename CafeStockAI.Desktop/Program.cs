@@ -1,5 +1,4 @@
-﻿namespace CafeStockAI.Desktop;
-
+namespace CafeStockAI.Desktop;
 internal static class Program
 {
     [STAThread]
@@ -13,11 +12,26 @@ internal static class Program
             ApplicationConfiguration.Initialize();
             if (args.Length == 2 && args[0] == "--check-system")
             {
-                try { SystemCheck.Run(args[1]); }
-                catch (Exception ex) { Directory.CreateDirectory(args[1]); File.WriteAllText(Path.Combine(args[1], "result.txt"), ex.ToString()); Environment.ExitCode = 1; }
+                try
+                {
+                    SystemCheck.Run(args[1]);
+                }
+                catch (Exception ex)
+                {
+                    Directory.CreateDirectory(args[1]);
+                    File.WriteAllText(Path.Combine(args[1], "result.txt"), ex.ToString());
+                    Environment.ExitCode = 1;
+                }
+
                 return;
             }
-            if (args.Length == 2 && args[0] == "--check-features") { FeatureCheck.Run(args[1]); return; }
+
+            if (args.Length == 2 && args[0] == "--check-features")
+            {
+                FeatureCheck.Run(args[1]);
+                return;
+            }
+
             if (args.Length == 2 && args[0] == "--check-startup")
             {
                 try
@@ -25,24 +39,50 @@ internal static class Program
                     using var login = new FrmLogin();
                     using var dashboard = new FrmDashboard();
                     using var products = new FrmProducts();
-                    login.CreateControl(); dashboard.CreateControl(); products.CreateControl();
-                    dashboard.CheckAllPages(); dashboard.ShowProducts(); dashboard.ShowOverview();
+                    login.CreateControl();
+                    dashboard.CreateControl();
+                    products.CreateControl();
+                    dashboard.CheckAllPages();
+                    dashboard.ShowProducts();
+                    dashboard.ShowOverview();
                     File.WriteAllText(args[1], "OK: Giriş, ana panel ve ürün ekranları oluşturuldu.");
                 }
-                catch (Exception ex) { File.WriteAllText(args[1], ex.ToString()); Environment.ExitCode = 1; }
+                catch (Exception ex)
+                {
+                    File.WriteAllText(args[1], ex.ToString());
+                    Environment.ExitCode = 1;
+                }
+
                 return;
             }
-            using var applicationMutex=new Mutex(true,"Local\\CafeStockAI.Application",out bool firstInstance);
-            if(!firstInstance){MessageBox.Show("CafeStock AI zaten açık. Açık uygulamayı kullanın veya önce kapatın.");return;}
+
+            using var applicationMutex = new Mutex(true, "Local\\CafeStockAI.Application", out bool firstInstance);
+            if (!firstInstance)
+            {
+                MessageBox.Show("CafeStock AI zaten açık. Açık uygulamayı kullanın veya önce kapatın.");
+                return;
+            }
+
             SqlMode.Initialize();
-            if(!SqlMode.Configured || SqlMode.Enabled) ProductStore.ApplyColdBrewCorrection();
-            if (!SqlMode.Configured) { DemoData.Initialize(); SingleBranchMode.Initialize(); }
-            if (!SqlMode.Configured || SqlMode.Enabled) Accounts.Sync();
-            string dailyBackup=Path.Combine(InventoryStore.DirectoryPath,"Yedekler");
-            if((!SqlMode.Configured || SqlMode.Enabled) && (!Directory.Exists(dailyBackup)||!Directory.EnumerateFiles(dailyBackup,"CafeStock-"+DateTime.Now.ToString("yyyyMMdd")+"-*.zip").Any()))Operations.CreateBackup();
+            if (!SqlMode.Configured || SqlMode.Enabled)
+                ProductStore.ApplyColdBrewCorrection();
+            if (!SqlMode.Configured)
+            {
+                DemoData.Initialize();
+                SingleBranchMode.Initialize();
+            }
+
+            if (!SqlMode.Configured || SqlMode.Enabled)
+                Accounts.Sync();
+            string dailyBackup = Path.Combine(InventoryStore.DirectoryPath, "Yedekler");
+            if ((!SqlMode.Configured || SqlMode.Enabled) && (!Directory.Exists(dailyBackup) || !Directory.EnumerateFiles(dailyBackup, "CafeStock-" + DateTime.Now.ToString("yyyyMMdd") + "-*.zip").Any()))
+                Operations.CreateBackup();
             System.Windows.Forms.Application.Run(new FrmLogin());
         }
-        catch (Exception ex) { ReportError(ex); }
+        catch (Exception ex)
+        {
+            ReportError(ex);
+        }
     }
 
     private static void ReportError(Exception exception)
@@ -55,8 +95,11 @@ internal static class Program
             File.AppendAllText(logPath, $"{DateTimeOffset.Now:O}\n{exception}\n\n");
             details = "Hata ayrıntıları: " + logPath;
         }
-        catch { details = exception.ToString(); }
-        MessageBox.Show("Uygulamada bir hata oluştu:\n" + exception.Message + "\n\n" + details,
-            "CafeStock AI - Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        catch
+        {
+            details = exception.ToString();
+        }
+
+        MessageBox.Show("Uygulamada bir hata oluştu:\n" + exception.Message + "\n\n" + details, "CafeStock AI - Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
     }
 }
